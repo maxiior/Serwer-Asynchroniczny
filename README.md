@@ -1,11 +1,11 @@
 # Serwer-Asynchroniczny
 
-### Loginy i hasła:
-maksim:maksim
-maksim1:maxiior
-kacper2:kbuczko
-milosz3:milorl
-test22:test44
+### Loginy i hasła:  
+maksim:maksim  
+maksim1:maxiior  
+kacper2:kbuczko  
+milosz3:milorl  
+test22:test44  
 
 ### Instrukcja
 Po uruchomieniu serwera mogą podłączać się do niego klienci. Po nazwiązaniu połączenia klient może się zalogować na jedno z wybranych powyżej kont, może założyć własne konto lub wyświetlić listę wszystkich użytkowników w bazie danych SQLite.  
