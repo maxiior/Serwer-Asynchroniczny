@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ServerLibrary
 {
     class Communicator
     {
-        public string interlocutorAnswere = "";
         private string interlocutor = "";
+        private string host = "";
+        public string interlocutorAnswere = "";
         public bool connected = true;
         public NetworkStream c1;
 
@@ -19,6 +17,11 @@ namespace ServerLibrary
         {
             get => interlocutor;
             set => interlocutor = value;
+        }
+        public string Host
+        {
+            get => host;
+            set => host = value;
         }
 
         /// <summary>
@@ -98,6 +101,7 @@ namespace ServerLibrary
         /// <returns></returns>
         public void Run(Sqlite sql, string player, List<NetworkStream> clients, List<User> loggedPlayers, List<User> busy)
         {
+            host = player;
             c1 = clients[GetClientIndex(player, loggedPlayers, clients)];
             Interlocutor = GetInterlocutor(loggedPlayers, busy, c1, player);
 
@@ -139,7 +143,7 @@ namespace ServerLibrary
                             connected = false;
                             break;
                         }
-                        if (connected) MessageTransmission.SendMessage(c2, m + " [" + player + "]" + Environment.NewLine);
+                        if (m!="" && connected) MessageTransmission.SendMessage(c2, m + " [" + player + "]" + Environment.NewLine);
                     }
                     MessageTransmission.SendMessage(c1, Environment.NewLine);
                 }

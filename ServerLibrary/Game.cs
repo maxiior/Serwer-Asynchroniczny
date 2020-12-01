@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ServerLibrary
 {
@@ -19,11 +15,19 @@ namespace ServerLibrary
 
         public string opponentAnswere = "";
         private string opponent = "";
+        private string host = "";
+
+        public bool connected = true;
 
         public string Opponent
         {
             get => opponent;
             set => opponent = value;
+        }
+        public string Host
+        {
+            get => host;
+            set => host = value;
         }
 
         /// <summary>
@@ -62,6 +66,7 @@ namespace ServerLibrary
         /// <returns></returns>
         public void Run(Sqlite sql, string player, List<NetworkStream> clients, List<User> loggedPlayers, List<User> alreadyPlay)
         {
+            Host = player;
             NetworkStream c1 = clients[GetClientIndex(player, loggedPlayers, clients)];
 
             Opponent = sql.SelectOpponent(player, alreadyPlay);
@@ -87,7 +92,12 @@ namespace ServerLibrary
                 if (opponentAnswere == "y" && s < 100)
                 {
                     Choose(c1);
-                    while (this.OpponentChoice.Count < 1) ;
+                    while (this.OpponentChoice.Count < 1 && connected) ;
+                    if(!connected)
+                    {
+                        Close(c1);
+                        return;
+                    }
 
                     if (Compare(PlayerChoice[0], OpponentChoice[0]) == 1)
                     {
@@ -114,7 +124,12 @@ namespace ServerLibrary
                     MessageTransmission.SendMessage(c1, Environment.NewLine);
 
                     Choose(c1);
-                    while (this.OpponentChoice.Count < 2) ;
+                    while (this.OpponentChoice.Count < 2 && connected) ;
+                    if (!connected)
+                    {
+                        Close(c1);
+                        return;
+                    }
 
                     if (Compare(PlayerChoice[1], OpponentChoice[1]) == 1)
                     {
@@ -141,7 +156,12 @@ namespace ServerLibrary
                     MessageTransmission.SendMessage(c1, Environment.NewLine);
 
                     Choose(c1);
-                    while (this.OpponentChoice.Count < 3) ;
+                    while (this.OpponentChoice.Count < 3 && connected) ;
+                    if (!connected)
+                    {
+                        Close(c1);
+                        return;
+                    }
 
                     if (Compare(PlayerChoice[2], OpponentChoice[2]) == 1)
                     {
@@ -168,7 +188,12 @@ namespace ServerLibrary
                     MessageTransmission.SendMessage(c1, Environment.NewLine);
 
                     Choose(c1);
-                    while (this.OpponentChoice.Count < 4) ;
+                    while (this.OpponentChoice.Count < 4 && connected) ;
+                    if (!connected)
+                    {
+                        Close(c1);
+                        return;
+                    }
 
                     if (Compare(PlayerChoice[3], OpponentChoice[3]) == 1)
                     {
@@ -296,6 +321,12 @@ namespace ServerLibrary
                 return 2;
             }
             else return 0;
+        }
+        private void Close(NetworkStream c1)
+        {
+            MessageTransmission.SendMessage(c1, Environment.NewLine);
+            MessageTransmission.SendMessage(c1, "The opponent quits the game. Try to connect again." + Environment.NewLine);
+            MessageTransmission.SendMessage(c1, Environment.NewLine);
         }
     }
 }

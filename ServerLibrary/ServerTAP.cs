@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace ServerLibrary
 {
-    public class ServerAPM<T> : Server<T> where T : CommunicationProtocol, new()
+    public class ServerTAP<T> : Server<T> where T : CommunicationProtocol, new()
     {
-        public delegate void TransmissionDataDelegate(NetworkStream Stream, TcpClient client);
+        public delegate void TransmissionDataDelegate(NetworkStream Stream);
         private CommunicationProtocol protocol = new T();
 
-        public ServerAPM(IPAddress IP, int port) : base(IP, port)
+        public ServerTAP(IPAddress IP, int port) : base(IP, port)
         {
 
         }
@@ -22,20 +23,10 @@ namespace ServerLibrary
             {
                 TcpClient client = TcpListener.AcceptTcpClient();
                 Stream = client.GetStream();
-                TransmissionDataDelegate transmissionDelegate = new TransmissionDataDelegate(BeginDataTransmission);
-                transmissionDelegate.BeginInvoke(Stream, client, TransmissionCallback, client);
+
+                Task.Run(() => BeginDataTransmission(Stream, client));
             }
         }
-        /// <summary>
-        /// Kończy połączenie z klientem.
-        /// </summary>
-        /// <param name="ar"></param>
-        private void TransmissionCallback(IAsyncResult ar)
-        {
-            TcpClient c = (TcpClient)ar.AsyncState;
-            c.Close();
-        }
-
         /// <summary>
         /// Menu wyboru opcji użytkownika.
         /// </summary>
@@ -43,8 +34,11 @@ namespace ServerLibrary
         protected override void BeginDataTransmission(NetworkStream Stream, TcpClient client)
         {
             protocol.Run(Stream, client);
+            protocol.Close(client);
+            Stream.Close();
+            client.Close();
         }
-        
+
         /// <summary>
         /// Rozpoczyna działanie serwera.
         /// </summary>

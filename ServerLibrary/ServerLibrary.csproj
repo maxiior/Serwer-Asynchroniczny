@@ -67,12 +67,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommunicationProtocol.cs" />
     <Compile Include="Communicator.cs" />
+    <Compile Include="GACServerProtocol.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="MessageTransmission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="ServerAPM.cs" />
+    <Compile Include="ServerTAP.cs" />
     <Compile Include="Sqlite.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>

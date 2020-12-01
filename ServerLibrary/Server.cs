@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace ServerLibrary
 {
-    public abstract class Server
+    public abstract class Server<T> where T : CommunicationProtocol, new()
     {
         IPAddress iPAddress;
         int port;
@@ -20,7 +20,8 @@ namespace ServerLibrary
         /// </summary>
         public IPAddress IPAddress
         {
-            get => iPAddress; set
+            get => iPAddress; 
+            set
             {
                 if (!running) iPAddress = value;
                 else throw new Exception("ERR: nie można zmienić adresu IP, gdy serwer jest aktywny.");
@@ -32,7 +33,8 @@ namespace ServerLibrary
         /// </summary>
         public int Port
         {
-            get => port; set
+            get => port; 
+            set
             {
                 int tmp = port;
 
@@ -52,7 +54,8 @@ namespace ServerLibrary
         /// </summary>
         public int Buffer_size
         {
-            get => buffer_size; set
+            get => buffer_size; 
+            set
             {
                 if (value < 0 || value > 1024 * 1024 * 64) throw new Exception("ERR: błędny rozmiar pakietu.");
 
@@ -110,7 +113,7 @@ namespace ServerLibrary
         /// <summary>
         /// System logowania i przesyłu danych.
         /// </summary>
-        protected abstract void BeginDataTransmission(NetworkStream stream);
+        protected abstract void BeginDataTransmission(NetworkStream stream, TcpClient client);
 
         /// <summary>
         /// Uruchomienie serwera.

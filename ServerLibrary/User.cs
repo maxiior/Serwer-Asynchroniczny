@@ -8,6 +8,7 @@
         private int elo;
         private int logged;
         private int hash;
+        private int tcphash;
 
         /// <summary>
         /// Dane użytkownika w bazie danych.
@@ -53,6 +54,11 @@
         {
             get => hash;
             set => hash = value;
+        }
+        public int TCPHash
+        {
+            get => tcphash;
+            set => tcphash = value;
         }
     }
 }
