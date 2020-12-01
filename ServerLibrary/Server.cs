@@ -6,14 +6,14 @@ namespace ServerLibrary
 {
     public abstract class Server<T> where T : CommunicationProtocol, new()
     {
-        IPAddress iPAddress;
-        int port;
-        int buffer_size = 1024;
-        bool running;
+        private IPAddress iPAddress;
+        private int port;
+        private int buffer_size = 1024;
+        private bool running;
 
-        TcpListener tcpListener;
-        TcpClient tcpClient;
-        NetworkStream stream;
+        private TcpListener tcpListener;
+        private TcpClient tcpClient;
+        private NetworkStream stream;
 
         /// <summary>
         /// Zmienna przechowująca adres IP serwera. Nie można jej zmienić w trakcie działania serwera.
