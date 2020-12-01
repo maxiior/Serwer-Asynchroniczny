@@ -85,6 +85,11 @@ namespace ServerLibrary
                         case "3":
                             sql.ShowAllUsers(Stream);
                             break;
+                        default:
+                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                            MessageTransmission.SendMessage(Stream, "There is no such option. Try again." + Environment.NewLine);
+                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                            break;
                     }
                 }
                 catch (IOException)
@@ -161,13 +166,19 @@ namespace ServerLibrary
 
                 u = new User(0, login, password, 0, 0);
 
-                if (sql.VerifyLogin(u))
+                if (sql.VerifyLogin(u) && sql.CheckIfLogged(u)==false)
                 {
                     MessageTransmission.SendMessage(Stream, Environment.NewLine);
                     sql.LoginStatus(u, 1);
                     MessageTransmission.SendMessage(Stream, "Login was successful." + Environment.NewLine);
                     MessageTransmission.SendMessage(Stream, Environment.NewLine);
                     logged(u, Stream, client);
+                }
+                else if (sql.CheckIfLogged(u) == true)
+                {
+                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    MessageTransmission.SendMessage(Stream, "User already logged in." + Environment.NewLine);
+                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
                 }
                 else
                 {

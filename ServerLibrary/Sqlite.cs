@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Data.SQLite;
 using System.Net.Sockets;
 using System.IO;
-using System.Security.Cryptography;
 using System.Configuration;
 using System.Data;
 using Dapper;
@@ -336,6 +334,29 @@ namespace ServerLibrary
                 if (move == "r") DbConn.Execute($"UPDATE Users SET Rocks = Rocks+1 WHERE login='{login}';");
                 else if(move == "s") DbConn.Execute($"UPDATE Users SET Scissors = Scissors+1 WHERE login='{login}';");
                 else DbConn.Execute($"UPDATE Users SET Papers = Papers+1 WHERE login='{login}';");
+            }
+        }
+        /// <summary>
+        /// Funkcja sprawdzająca, czy użytkownik jest zalogowany
+        /// </summary>
+        /// <returns>Zwraca true jeżeli jest zalogowany i false jeżeli nie jest zalogowany</returns>
+        public bool CheckIfLogged(User u)
+        {
+            using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
+            {
+                try
+                {
+                    var logged = DbConn.QuerySingleOrDefault($"SELECT Logged FROM Users WHERE Login='{u.Login}';");
+                    int l = Convert.ToInt32(logged.Logged);
+
+                    if (l == 1) return true;
+                    else return false;
+                }
+                catch(Exception e)
+                {
+                    return false;
+                }
+                
             }
         }
 
