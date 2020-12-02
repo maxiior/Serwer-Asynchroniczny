@@ -7,6 +7,7 @@ namespace ServerLibrary
 {
     class Communicator
     {
+        private DateTime now = DateTime.Now;
         private string interlocutor = "";
         private string host = "";
         public string interlocutorAnswere = "";
@@ -124,6 +125,8 @@ namespace ServerLibrary
 
                 if (interlocutorAnswere == "y" && s < 100)
                 {
+                    sql.AddConversationToDB(player, Interlocutor);
+
                     MessageTransmission.SendMessage(c1, "The conversation began:" + Environment.NewLine);
                     MessageTransmission.SendMessage(c2, "The conversation began:" + Environment.NewLine);
 
@@ -143,7 +146,11 @@ namespace ServerLibrary
                             connected = false;
                             break;
                         }
-                        if (m!="" && connected) MessageTransmission.SendMessage(c2, m + " [" + player + "]" + Environment.NewLine);
+                        if (m != "" && connected)
+                        {
+                            MessageTransmission.SendMessage(c2, m + " [" + player + "]" + " [" + now.ToString("yyyy-MM-dd hh:mm") + "]" + Environment.NewLine);
+                            sql.AddMessageToDB(player, Interlocutor, m, now.ToString("yyyy-MM-dd hh:mm"));
+                        }
                     }
                     MessageTransmission.SendMessage(c1, Environment.NewLine);
                 }

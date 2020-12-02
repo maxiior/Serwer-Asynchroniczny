@@ -9,6 +9,8 @@ namespace ServerLibrary
     //GameAndCommunicationServerProtocol
     public class GACServerProtocol : CommunicationProtocol
     {
+        private DateTime now = DateTime.Now;
+
         private Sqlite sql = new Sqlite();
 
         private List<NetworkStream> clients = new List<NetworkStream>();
@@ -464,7 +466,10 @@ namespace ServerLibrary
                                     }
 
                                     if (m!="" && activeConversation[conversationIndex].Interlocutor == u.Login && activeConversation[conversationIndex].connected)
-                                        MessageTransmission.SendMessage(activeConversation[conversationIndex].c1, m + " [" + u.Login + "]" + Environment.NewLine);
+                                    {
+                                        MessageTransmission.SendMessage(activeConversation[conversationIndex].c1, m + " [" + u.Login + "]" + " [" + now.ToString("yyyy-MM-dd hh:mm") + "]" + Environment.NewLine);
+                                        sql.AddMessageToDB(u.Login, activeConversation[conversationIndex].Host, m, now.ToString("yyyy-MM-dd hh:mm"));
+                                    }
                                 }
                                 catch (Exception e)
                                 {

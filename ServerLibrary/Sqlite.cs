@@ -359,6 +359,95 @@ namespace ServerLibrary
                 
             }
         }
+        /// <summary>
+        /// Dodaje konwersację do bazy danych.
+        /// </summary>
+        /// <param name="u1">Login pierwszego gracza.</param>
+        /// <param name="u2">Login drugiego gracza.</param>
+        public void AddConversationToDB(string u1, string u2)
+        {
+            using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
+            {
+                var st = DbConn.Query($"SELECT user1, user2 FROM Conversations;", new { ids = new[] { 1, 2 } }).ToList();
+
+                bool check = false;
+
+                for(int i=0; i<st.Count(); i++)
+                    if ((st[i].user1 == u1 && st[i].user2 == u2) || (st[i].user1 == u2 && st[i].user2 == u1)) check = true;
+
+                if(!check) DbConn.Execute($"INSERT INTO Conversations (user1, user2) VALUES ('{u1}', '{u2}');");
+            }
+        }
+        /// <summary>
+        /// Zapisuje wiadomość w bazie danych sqlite.
+        /// </summary>
+        /// <param name="m">Wiadomość.</param>
+        /// <param name="d">Data wysłania.</param>
+        public void AddMessageToDB(string u1, string u2, string m, string d)
+        {
+            using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
+            {
+                var st = DbConn.Query($"SELECT converId, user1, user2 FROM Conversations;", new { ids = new[] { 1, 2, 3  } }).ToList();
+
+                bool check = false;
+                int id = 0;
+                
+                for (int i = 0; i < st.Count(); i++)
+                    if ((st[i].user1 == u1 && st[i].user2 == u2) || (st[i].user1 == u2 && st[i].user2 == u1))
+                    {
+                        check = true;
+                        id = Convert.ToInt32(st[i].converId);
+                    }
+
+                if (check)
+                {
+                    DbConn.Execute($"INSERT INTO Messages (converId, date, message, sender) VALUES ('{id}', '{d}', '{m}', '{u1}');");
+                }
+            }
+        }
+        /// <summary>
+        /// Wczytuje historię konwersacji użytkowników.
+        /// </summary>
+        /// <param name="u1">Pierwszy użytkownik.</param>
+        /// <param name="u2">Drugi użytkownik.</param>
+        public string ReadMessagesHistoryDB(string u1, string u2)
+        {
+            using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
+            {
+                try
+                {
+                    var st = DbConn.Query($"SELECT converId, user1, user2 FROM Conversations;", new { ids = new[] { 1, 2, 3 } }).ToList();
+
+                    bool check = false;
+                    int id = 0;
+
+                    for (int i = 0; i < st.Count(); i++)
+                        if ((st[i].user1 == u1 && st[i].user2 == u2) || (st[i].user1 == u2 && st[i].user2 == u1))
+                        {
+                            check = true;
+                            id = Convert.ToInt32(st[i].converId);
+                        }
+
+                    if (check)
+                    {
+                        var data = DbConn.Query($"SELECT date, message, sender FROM Messages WHERE converId={id};", new { ids = new[] { 1, 2, 3 } }).ToList();
+
+                        string messages = "";
+
+                        for (int i = 0; i < data.Count(); i++)
+                            messages += data[i].sender + " " + "[" + data[i].date + "]" + " " + data[i].message + Environment.NewLine;
+
+                        return messages;
+                    }
+                    else return "";
+                }
+                catch(Exception e)
+                {
+                    return "";
+                }
+
+            }
+        }
 
         private static string ConnectionString()
         {
