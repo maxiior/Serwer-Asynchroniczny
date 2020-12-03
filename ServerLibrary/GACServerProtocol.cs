@@ -377,8 +377,7 @@ namespace ServerLibrary
                             activeGames[gameIndex].opponentAnswere = "y";
                             busyUsers.Add(u);
 
-                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: ");
+                            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: " + Environment.NewLine);
                             string w = MessageTransmission.GetMessage(Stream);
 
                             for (int i = 0; i < activeGames.Count; i++)
@@ -402,8 +401,7 @@ namespace ServerLibrary
                             }
                             Thread.Sleep(50);
 
-                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: ");
+                            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: " + Environment.NewLine);
                             w = MessageTransmission.GetMessage(Stream);
 
                             for (int i = 0; i < activeGames.Count; i++)
@@ -427,8 +425,7 @@ namespace ServerLibrary
                             }
                             Thread.Sleep(50);
 
-                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: ");
+                            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: " + Environment.NewLine);
                             w = MessageTransmission.GetMessage(Stream);
 
                             for (int i = 0; i < activeGames.Count; i++)
@@ -452,8 +449,7 @@ namespace ServerLibrary
                             }
                             Thread.Sleep(50);
 
-                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: ");
+                            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: " + Environment.NewLine);
                             w = MessageTransmission.GetMessage(Stream);
 
                             for (int i = 0; i < activeGames.Count; i++)
