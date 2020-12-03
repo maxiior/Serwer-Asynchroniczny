@@ -264,36 +264,64 @@ namespace ServerLibrary
                         for (int i = 3; i < 6; i++)
                             movements += s[i];
 
-                        MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                        MessageTransmission.SendMessage(Stream, "Login: " + u.Login + Environment.NewLine);
-                        MessageTransmission.SendMessage(Stream, "ELO: " + s[6] + Environment.NewLine);
-                        MessageTransmission.SendMessage(Stream, "*Statistics: " + Environment.NewLine);
+                        string statistics = "";
+
+                        //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                        //MessageTransmission.SendMessage(Stream, "Login: " + u.Login + Environment.NewLine);
+                        //MessageTransmission.SendMessage(Stream, "ELO: " + s[6] + Environment.NewLine);
+                        //MessageTransmission.SendMessage(Stream, "*Statistics: " + Environment.NewLine);
+
+                        statistics += "Login: " + u.Login + Environment.NewLine;
+                        statistics += "ELO: " + s[6] + Environment.NewLine;
+                        statistics += "*Statistics: " + Environment.NewLine;
+
+
                         if (matches == 0)
                         {
-                            MessageTransmission.SendMessage(Stream, "Wins: " + s[0] + " (0.0%)" + Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Loses: " + s[1] + " (0.0%)" + Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Draws: " + s[2] + " (0.0%)" + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Wins: " + s[0] + " (0.0%)" + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Loses: " + s[1] + " (0.0%)" + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Draws: " + s[2] + " (0.0%)" + Environment.NewLine);
+
+                            statistics += "Wins: " + s[0] + " (0.0%)" + Environment.NewLine;
+                            statistics += "Loses: " + s[1] + " (0.0%)" + Environment.NewLine;
+                            statistics += "Draws: " + s[2] + " (0.0%)" + Environment.NewLine;
                         }
                         else
                         {
-                            MessageTransmission.SendMessage(Stream, "Wins: " + s[0] + " (" + (float)s[0] / matches * 100 + "%)" + Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Loses: " + s[1] + " (" + (float)s[1] / matches * 100 + "%)" + Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Draws: " + s[2] + " (" + (float)s[2] / matches * 100 + "%)" + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Wins: " + s[0] + " (" + (float)s[0] / matches * 100 + "%)" + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Loses: " + s[1] + " (" + (float)s[1] / matches * 100 + "%)" + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Draws: " + s[2] + " (" + (float)s[2] / matches * 100 + "%)" + Environment.NewLine);
+
+                            statistics += "Wins: " + s[0] + " (" + (float)s[0] / matches * 100 + "%)" + Environment.NewLine;
+                            statistics += "Loses: " + s[1] + " (" + (float)s[1] / matches * 100 + "%)" + Environment.NewLine;
+                            statistics += "Draws: " + s[2] + " (" + (float)s[2] / matches * 100 + "%)" + Environment.NewLine;
                         }
-                        MessageTransmission.SendMessage(Stream, "*The most common movements: " + Environment.NewLine);
+                        //MessageTransmission.SendMessage(Stream, "*The most common movements: " + Environment.NewLine);
+
+                        statistics += "*The most common movements: " + Environment.NewLine;
+
                         if (matches == 0)
                         {
-                            MessageTransmission.SendMessage(Stream, "Rocks: " + s[3] + " (0.0%)" + Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Scissors: " + s[4] + " (0.0%)" + Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Papers: " + s[5] + " (0.0%)" + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Rocks: " + s[3] + " (0.0%)" + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Scissors: " + s[4] + " (0.0%)" + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Papers: " + s[5] + " (0.0%)" + Environment.NewLine);
+
+                            statistics += "Rocks: " + s[3] + " (0.0%)" + Environment.NewLine;
+                            statistics += "Scissors: " + s[4] + " (0.0%)" + Environment.NewLine;
+                            statistics += "Papers: " + s[5] + " (0.0%)" + Environment.NewLine;
                         }
                         else
                         {
-                            MessageTransmission.SendMessage(Stream, "Rocks: " + s[3] + " (" + (float)s[3] / movements * 100 + "%)" + Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Scissors: " + s[4] + " (" + (float)s[4] / movements * 100 + "%)" + Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Papers: " + s[5] + " (" + (float)s[5] / movements * 100 + "%)" + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Rocks: " + s[3] + " (" + (float)s[3] / movements * 100 + "%)" + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Scissors: " + s[4] + " (" + (float)s[4] / movements * 100 + "%)" + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Papers: " + s[5] + " (" + (float)s[5] / movements * 100 + "%)" + Environment.NewLine);
+
+                            statistics += "Rocks: " + s[3] + " (" + (float)s[3] / movements * 100 + "%)" + Environment.NewLine;
+                            statistics += "Scissors: " + s[4] + " (" + (float)s[4] / movements * 100 + "%)" + Environment.NewLine;
+                            statistics += "Papers: " + s[5] + " (" + (float)s[5] / movements * 100 + "%)" + Environment.NewLine;
                         }
-                        MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                        MessageTransmission.SendMessage(Stream, statistics);
+                        //MessageTransmission.SendMessage(Stream, Environment.NewLine);
                         break;
                     case "4":
                         sql.DeleteUser(u);
@@ -303,20 +331,22 @@ namespace ServerLibrary
                         return;
                     case "5":
                         string newPass;
-                        MessageTransmission.SendMessage(Stream, "Enter a new password [6-20 signs]: ");
+                        //MessageTransmission.SendMessage(Stream, "Enter a new password [6-20 signs]: ");
                         newPass = MessageTransmission.GetMessage(Stream);
                         if (newPass.Length > 5 || 21 < newPass.Length)
                         {
                             sql.ChangePassword(u, newPass);
-                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Password was changed successfully." + Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Password was changed successfully." + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                            MessageTransmission.SendMessage(Stream, "success");
                         }
                         else
                         {
-                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "Wrong password. Password should be longer than 6 signs." + Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "Wrong password. Password should be longer than 6 signs." + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                            MessageTransmission.SendMessage(Stream, "wrong");
                         }
                         break;
                     case "6":

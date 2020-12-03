@@ -97,6 +97,7 @@ namespace Client
 
         private void button5_Click(object sender, EventArgs e)
         {
+            textBox8.Visible = false;
             string login = textBox1.Text;
             string password = textBox2.Text;
 
@@ -253,12 +254,14 @@ namespace Client
 
         private void button17_Click(object sender, EventArgs e)
         {
+            textBox8.Visible = false;
             SendMessage(Stream, "6");
             panel6.Visible = false;
         }
 
         private void button15_Click(object sender, EventArgs e)
         {
+            textBox8.Visible = false;
             SendMessage(Stream, "4");
             panel6.Visible = false;
         }
@@ -269,6 +272,75 @@ namespace Client
         }
 
         private void button13_Click(object sender, EventArgs e)
+        {
+            SendMessage(Stream, "2");
+            textBox8.Visible = true;
+            textBox8.Text = GetMessage(Stream);
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            textBox8.Visible = false;
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            textBox8.Visible = false;
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            textBox8.Visible = false;
+            label20.Visible = true;
+            textBox9.Visible = true;
+            button18.Visible = true;
+        }
+
+        private void label20_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            string password = textBox9.Text;
+
+            if (password != "")
+            {
+                SendMessage(Stream, "5");
+                SendMessage(Stream, password);
+            }
+            else if (password == "")
+            {
+                label9.Visible = true;
+                button7.Visible = true;
+                label9.Text = "You did not provide your password!";
+                return;
+            }
+
+            string m = GetMessage(Stream);
+
+            if (m == "success")
+            {
+                label21.Visible = true;
+                label21.Text = "Password was changed successfully.";
+                label20.Visible = false;
+                textBox9.Visible = false;
+                button18.Visible = false;
+            }
+            else if (m == "wrong")
+            {
+                label21.Visible = true;
+                label21.Text = "Wrong password. Try again.";
+            }
+        }
+
+        private void label21_Click(object sender, EventArgs e)
         {
 
         }
