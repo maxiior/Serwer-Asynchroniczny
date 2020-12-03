@@ -241,16 +241,20 @@ namespace ServerLibrary
 
                 string logged;
 
+                string u = "";
+
                 for (int i = 0; i < users.Count; i++)
                 {
                     if (users[i].Logged == 1) logged = "TRUE";
                     else logged = "FALSE";
-                    MessageTransmission.SendMessage(s, string.Concat("LOGIN: ", users[i].Login, Environment.NewLine));
-                    MessageTransmission.SendMessage(s, string.Concat("PASSWORD: ", users[i].Password, Environment.NewLine));
-                    MessageTransmission.SendMessage(s, string.Concat("ELO: ", users[i].Elo, Environment.NewLine));
-                    MessageTransmission.SendMessage(s, string.Concat("LOGGED: ", users[i].Logged, Environment.NewLine));
-                    MessageTransmission.SendMessage(s, Environment.NewLine);
+
+                    u += string.Concat("LOGIN: ", users[i].Login, Environment.NewLine);
+                    u += string.Concat("PASSWORD: ", users[i].Password, Environment.NewLine);
+                    u += string.Concat("ELO: ", users[i].Elo, Environment.NewLine);
+                    u += string.Concat("LOGGED: ", users[i].Logged, Environment.NewLine);
+                    u += Environment.NewLine;
                 }
+                MessageTransmission.SendMessage(s, u);
 
             }
         }

@@ -70,9 +70,9 @@ namespace ServerLibrary
             {
                 try
                 {
-                    MessageTransmission.SendMessage(Stream, "1 - Login" + Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, "2 - Register" + Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, "3 - Show all logins" + Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, "1 - Login" + Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, "2 - Register" + Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, "3 - Show all logins" + Environment.NewLine);
 
                     option = MessageTransmission.GetMessage(Stream);
 
@@ -107,42 +107,52 @@ namespace ServerLibrary
         private void register(NetworkStream Stream)
         {
             string login, password;
+            string loginAndPassword;
             User u;
 
             try
             {
-                MessageTransmission.SendMessage(Stream, "Enter LOGIN [6-20 signs]: ");
-                login = MessageTransmission.GetMessage(Stream);
-                MessageTransmission.SendMessage(Stream, "Enter PASSWORD [6-20 signs]: ");
-                password = MessageTransmission.GetMessage(Stream);
+                //MessageTransmission.SendMessage(Stream, "Enter LOGIN [6-20 signs]: ");
+                //login = MessageTransmission.GetMessage(Stream);
+                //MessageTransmission.SendMessage(Stream, "Enter PASSWORD [6-20 signs]: ");
+                //password = MessageTransmission.GetMessage(Stream);
+
+                loginAndPassword = MessageTransmission.GetMessage(Stream);
+                string[] tmp = loginAndPassword.Split(' ');
+                login = tmp[0];
+                password = tmp[1];
 
                 u = new User(0, login, password, 500, 0);
 
                 if (u.Login.Length < 6 || u.Login.Length > 25)
                 {
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, "Invalid username length." + Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, "Invalid username length." + Environment.NewLine);
+                    MessageTransmission.SendMessage(Stream, "userlength");
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
                 }
-                else if (u.Login.Length < 6 || u.Login.Length > 25)
+                else if (u.Password.Length < 6 || u.Password.Length > 25)
                 {
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, "Invalid password length." + Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, "Invalid password length." + Environment.NewLine);
+                    MessageTransmission.SendMessage(Stream, "passlength");
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
                 }
                 else if (!sql.CheckIfInDB(u))
                 {
                     sql.AddUser(u);
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, "Registration was successful." + Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, "Registration was successful." + Environment.NewLine);
+                    MessageTransmission.SendMessage(Stream, "success");
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
                 }
                 else
                 {
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, "User with that name already exists." + Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, "Try again." + Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, "User with that name already exists." + Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, "Try again." + Environment.NewLine);
+                    MessageTransmission.SendMessage(Stream, "exist");
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
                 }
             }
             catch (IOException)
@@ -157,36 +167,45 @@ namespace ServerLibrary
         private void login(NetworkStream Stream, TcpClient client)
         {
             string login, password;
+            string loginAndPassword;
             User u;
 
             try
             {
-                MessageTransmission.SendMessage(Stream, "LOGIN: ");
-                login = MessageTransmission.GetMessage(Stream);
-                MessageTransmission.SendMessage(Stream, "PASSWORD: ");
-                password = MessageTransmission.GetMessage(Stream);
+                //MessageTransmission.SendMessage(Stream, "LOGIN: ");
+                //login = MessageTransmission.GetMessage(Stream);
+                //MessageTransmission.SendMessage(Stream, "PASSWORD: ");
+                //password = MessageTransmission.GetMessage(Stream);
 
+                loginAndPassword = MessageTransmission.GetMessage(Stream);
+                string[] tmp = loginAndPassword.Split(' ');
+                login = tmp[0];
+                password = tmp[1];
+                
                 u = new User(0, login, password, 0, 0);
 
                 if (sql.VerifyLogin(u) && sql.CheckIfLogged(u)==false)
                 {
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
                     sql.LoginStatus(u, 1);
-                    MessageTransmission.SendMessage(Stream, "Login was successful." + Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, "Login was successful." + Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    MessageTransmission.SendMessage(Stream, "success");
                     logged(u, Stream, client);
                 }
                 else if (sql.CheckIfLogged(u) == true)
                 {
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, "User already logged in." + Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, "User already logged in." + Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    MessageTransmission.SendMessage(Stream, "loggedin");
                 }
                 else
                 {
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, "Wrong login or password." + Environment.NewLine);
-                    MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, "Wrong login or password." + Environment.NewLine);
+                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    MessageTransmission.SendMessage(Stream, "wrong");
                 }
             }
             catch (IOException)
@@ -209,17 +228,17 @@ namespace ServerLibrary
             clients.Add(Stream);
             loggedPlayers.Add(u);
 
-            MessageTransmission.SendMessage(Stream, Environment.NewLine);
-            MessageTransmission.SendMessage(Stream, "Logged as: " + u.Login + Environment.NewLine);
+            //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+            //MessageTransmission.SendMessage(Stream, "Logged as: " + u.Login + Environment.NewLine);
 
             while (true)
             {
-                MessageTransmission.SendMessage(Stream, "1 - Play game" + Environment.NewLine);
-                MessageTransmission.SendMessage(Stream, "2 - Show profile" + Environment.NewLine);
-                MessageTransmission.SendMessage(Stream, "3 - Communicator" + Environment.NewLine);
-                MessageTransmission.SendMessage(Stream, "4 - Delete account" + Environment.NewLine);
-                MessageTransmission.SendMessage(Stream, "5 - Change password" + Environment.NewLine);
-                MessageTransmission.SendMessage(Stream, "6 - Log out" + Environment.NewLine);
+                //MessageTransmission.SendMessage(Stream, "1 - Play game" + Environment.NewLine);
+                //MessageTransmission.SendMessage(Stream, "2 - Show profile" + Environment.NewLine);
+                //MessageTransmission.SendMessage(Stream, "3 - Communicator" + Environment.NewLine);
+                //MessageTransmission.SendMessage(Stream, "4 - Delete account" + Environment.NewLine);
+                //MessageTransmission.SendMessage(Stream, "5 - Change password" + Environment.NewLine);
+                //MessageTransmission.SendMessage(Stream, "6 - Log out" + Environment.NewLine);
 
                 option = MessageTransmission.GetMessage(Stream);
 
@@ -278,9 +297,9 @@ namespace ServerLibrary
                         break;
                     case "4":
                         sql.DeleteUser(u);
-                        MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                        MessageTransmission.SendMessage(Stream, "Account has been deleted." + Environment.NewLine);
-                        MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                        //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                        //MessageTransmission.SendMessage(Stream, "Account has been deleted." + Environment.NewLine);
+                        //MessageTransmission.SendMessage(Stream, Environment.NewLine);
                         return;
                     case "5":
                         string newPass;
@@ -301,12 +320,13 @@ namespace ServerLibrary
                         }
                         break;
                     case "6":
-                        MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                        //MessageTransmission.SendMessage(Stream, Environment.NewLine);
                         loggedPlayers.Remove(u);
                         sql.LoginStatus(u, 0);
-                        MessageTransmission.SendMessage(Stream, "You have logged out." + Environment.NewLine);
-                        MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                        //MessageTransmission.SendMessage(Stream, "You have logged out." + Environment.NewLine);
+                        //MessageTransmission.SendMessage(Stream, Environment.NewLine);
                         return;
+                        break;
                     case "1":
                         Game g = new Game();
                         activeGames.Add(g);
