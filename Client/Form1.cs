@@ -306,7 +306,7 @@ namespace Client
                 }
                 else
                 {
-                    textBox13.Text = m;
+                    textBox13.Text += m;
                     m = "";
                 }
             }
