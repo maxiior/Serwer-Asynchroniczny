@@ -1,5 +1,7 @@
 # Serwer-Asynchroniczny
 
+W branchu main jest zawarta wersja konsolowa, a w brachu GUI wersja z interfejsem graficznym.
+
 ### Loginy i hasła:  
 maksim:maksim  
 maksim1:maxiior  
