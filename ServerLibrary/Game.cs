@@ -272,8 +272,7 @@ namespace ServerLibrary
         /// <param name="Stream">Strumień konkretnego gracza.</param>
         private void Choose(NetworkStream Stream)
         {
-            MessageTransmission.SendMessage(Stream, Environment.NewLine);
-            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: ");
+            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: " + Environment.NewLine);
             string w = MessageTransmission.GetMessage(Stream);
             PlayerChoice.Add(w);
         }

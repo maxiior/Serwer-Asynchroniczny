@@ -304,6 +304,13 @@ namespace Client
                     textBox13.Text = "Do you want to PLAY with: " + info[1] + Environment.NewLine;
                     m = "";
                 }
+                else if(m.StartsWith("You "))
+                {
+                    textBox13.Text += m;
+                    m = "";
+                    button28.Visible = true;
+                    break;
+                }
                 else
                 {
                     textBox13.Text += m;
@@ -477,10 +484,10 @@ namespace Client
 
         private void button22_Click(object sender, EventArgs e)
         {
+            button28.Visible = false;
             SendMessage(Stream, "1");
             Thread t = new Thread(() => WaitingForAnswear());
             t.Start();
-
         }
 
         private void WaitingForAnswear()
@@ -502,6 +509,7 @@ namespace Client
 
         private void button24_Click(object sender, EventArgs e)
         {
+            button28.Visible = false;
             SendMessage(Stream, "y");
         }
 
@@ -523,6 +531,11 @@ namespace Client
         private void button27_Click(object sender, EventArgs e)
         {
             SendMessage(Stream, "p");
+        }
+
+        private void button28_Click(object sender, EventArgs e)
+        {
+            panel8.Visible = false;
         }
     }
 }

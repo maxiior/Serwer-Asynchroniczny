@@ -100,6 +100,7 @@
             this.button23 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
             this.button27 = new System.Windows.Forms.Button();
+            this.button28 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -887,6 +888,7 @@
             // 
             // panel8
             // 
+            this.panel8.Controls.Add(this.button28);
             this.panel8.Controls.Add(this.button27);
             this.panel8.Controls.Add(this.button26);
             this.panel8.Controls.Add(this.button23);
@@ -1005,6 +1007,20 @@
             this.button27.UseVisualStyleBackColor = false;
             this.button27.Click += new System.EventHandler(this.button27_Click);
             // 
+            // button28
+            // 
+            this.button28.BackColor = System.Drawing.Color.White;
+            this.button28.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button28.FlatAppearance.BorderSize = 0;
+            this.button28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button28.Location = new System.Drawing.Point(42, 304);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(135, 23);
+            this.button28.TabIndex = 38;
+            this.button28.Text = "BACK";
+            this.button28.UseVisualStyleBackColor = false;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1111,6 +1127,7 @@
         private System.Windows.Forms.Button button23;
         private System.Windows.Forms.Button button27;
         private System.Windows.Forms.Button button26;
+        private System.Windows.Forms.Button button28;
     }
 }
 
