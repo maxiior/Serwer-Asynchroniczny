@@ -73,12 +73,13 @@ namespace ServerLibrary
 
             if(Opponent!=null)
             {
-                MessageTransmission.SendMessage(c1, Environment.NewLine);
+                //MessageTransmission.SendMessage(c1, Environment.NewLine);
                 MessageTransmission.SendMessage(c1, "Your opponent is: " + Opponent + Environment.NewLine);
                 MessageTransmission.SendMessage(c1, "Waiting for opponent..." + Environment.NewLine);
 
                 NetworkStream c2 = clients[GetClientIndex(Opponent, loggedPlayers, clients)];
-                MessageTransmission.SendMessage(c2, Environment.NewLine + "Do you want to PLAY with: " + player + "? [y/n]" + Environment.NewLine);
+                MessageTransmission.SendMessage(c2, "PLAY:" + player);
+                //MessageTransmission.SendMessage(c2, Environment.NewLine + "Do you want to PLAY with: " + player + "? [y/n]" + Environment.NewLine);
 
                 int s = 0;
 

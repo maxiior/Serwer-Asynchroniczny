@@ -54,13 +54,16 @@ namespace ServerLibrary
 
             if (users.Count == 0) return null;
 
-            MessageTransmission.SendMessage(s, "Players that you can communicate with:" + Environment.NewLine);
+            //MessageTransmission.SendMessage(s, "Players that you can communicate with:" + Environment.NewLine);
+            string logins = "";
             for (int i=0; i<users.Count; i++)
             {
-                MessageTransmission.SendMessage(s, (i+1).ToString() + ". " + users[i].Login + "." + Environment.NewLine);
+                logins += users[i].Login + " ";
+                //MessageTransmission.SendMessage(s, (i+1).ToString() + ". " + users[i].Login + "." + Environment.NewLine);
             }
-            MessageTransmission.SendMessage(s, Environment.NewLine);
-            MessageTransmission.SendMessage(s, "Choose [type '0' to resign]:" + Environment.NewLine);
+            MessageTransmission.SendMessage(s, logins);
+            //MessageTransmission.SendMessage(s, Environment.NewLine);
+            //MessageTransmission.SendMessage(s, "Choose [type '0' to resign]:" + Environment.NewLine);
 
             int u = Convert.ToInt32(MessageTransmission.GetMessage(s));
             if (u == 0) return "0";
@@ -109,8 +112,8 @@ namespace ServerLibrary
             if (Interlocutor != null && Interlocutor != "0")
             {
                 NetworkStream c2 = clients[GetClientIndex(Interlocutor, loggedPlayers, clients)];
-                MessageTransmission.SendMessage(c1, Environment.NewLine);
-                MessageTransmission.SendMessage(c1, "Waiting for " + Interlocutor + "..." + Environment.NewLine);
+                //MessageTransmission.SendMessage(c1, Environment.NewLine);
+                //MessageTransmission.SendMessage(c1, "Waiting for " + Interlocutor + "..." + Environment.NewLine);
 
                 MessageTransmission.SendMessage(c2, Environment.NewLine + "Do you want to SPEAK with: " + player + "? [y/n]" + Environment.NewLine);
 
@@ -127,8 +130,10 @@ namespace ServerLibrary
                 {
                     sql.AddConversationToDB(player, Interlocutor);
 
-                    MessageTransmission.SendMessage(c1, "The conversation began:" + Environment.NewLine);
-                    MessageTransmission.SendMessage(c2, "The conversation began:" + Environment.NewLine);
+                    //MessageTransmission.SendMessage(c1, "The conversation began:" + Environment.NewLine);
+                    //MessageTransmission.SendMessage(c2, "The conversation began:" + Environment.NewLine);
+                    MessageTransmission.SendMessage(c1, "BEGAN");
+                    MessageTransmission.SendMessage(c2, "BEGAN");
 
                     string m="";
 
@@ -157,18 +162,20 @@ namespace ServerLibrary
                 else
                 {
                     this.Interlocutor = "";
-                    MessageTransmission.SendMessage(c1, "The interlocutor quits the conversation. Try to connect again." + Environment.NewLine);
-                    MessageTransmission.SendMessage(c1, Environment.NewLine);
+                    //MessageTransmission.SendMessage(c1, "The interlocutor quits the conversation. Try to connect again." + Environment.NewLine);
+                    MessageTransmission.SendMessage(c1, "quits");
+                    //MessageTransmission.SendMessage(c1, Environment.NewLine);
                 }
             }
             else if (Interlocutor == null)
             {
-                MessageTransmission.SendMessage(c1, "There are no other players at the moment." + Environment.NewLine);
-                MessageTransmission.SendMessage(c1, Environment.NewLine);
+                //MessageTransmission.SendMessage(c1, "There are no other players at the moment." + Environment.NewLine);
+                MessageTransmission.SendMessage(c1, "noother");
+                //MessageTransmission.SendMessage(c1, Environment.NewLine);
             }
             else if (Interlocutor == "0")
             {
-                MessageTransmission.SendMessage(c1, Environment.NewLine);
+                //MessageTransmission.SendMessage(c1, Environment.NewLine);
             }
         }
     }

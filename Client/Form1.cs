@@ -17,6 +17,11 @@ namespace Client
         TcpClient Client;
         NetworkStream Stream;
 
+        private bool connected = false;
+        private bool send = false;
+        private string messa = "";
+        private Thread tmp1;
+
 
         public static void SendMessage(NetworkStream s, string m)
         {
@@ -281,11 +286,47 @@ namespace Client
         private void button12_Click(object sender, EventArgs e)
         {
             textBox8.Visible = false;
+            panel8.Visible = true;
+
+            Thread tmp1 = new Thread(() => WaitForInvite());
+            tmp1.Start();
+        }
+
+        private void WaitForInvite()
+        {
+            string m = "";
+            while(true)
+            {
+                m = GetMessage(Stream);
+                if (m.StartsWith("PLAY:"))
+                {
+                    string[] info = m.Split(':');
+                    textBox13.Text = "Do you want to PLAY with: " + info[1] + Environment.NewLine;
+                    m = "";
+                }
+                else
+                {
+                    textBox13.Text = m;
+                    m = "";
+                }
+            }
         }
 
         private void button14_Click(object sender, EventArgs e)
         {
+            panel7.Location = new Point(0, 0);
+            panel7.Visible = true;
+            SendMessage(Stream, "3");
             textBox8.Visible = false;
+            string l = GetMessage(Stream);
+
+            if(l!="noother")
+            {
+                string[] logins = l.Split(' ');
+
+                foreach (string i in logins)
+                    comboBox1.Items.Add(i);
+            }
         }
 
         private void button16_Click(object sender, EventArgs e)
@@ -343,6 +384,145 @@ namespace Client
         private void label21_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            if(connected==false) SendMessage(Stream, "0");
+            else SendMessage(Stream, "exit");
+            panel7.Visible = false;
+            connected = false;
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            string choose = comboBox1.Text;
+            string index = (comboBox1.SelectedIndex+1).ToString();
+
+            SendMessage(Stream, index);
+
+            if (choose!="")
+            {
+                connected = true;
+                textBox11.Text = "Waiting for " + choose + "..." + Environment.NewLine;
+
+                Thread t = new Thread(() => messa = GetMessage(Stream));
+                Thread t2 = new Thread(() => check(choose));
+                t.Start();
+                t2.Start();
+            }
+        }
+
+        private void WaitForMessages()
+        {
+            string m = "";
+            while(connected)
+            {
+                m = GetMessage(Stream);
+                textBox11.Text += m + Environment.NewLine;
+            }
+        }
+        private void SendMessages()
+        {
+            while(connected)
+            {
+                if(send)
+                {
+                    SendMessage(Stream, textBox10.Text + Environment.NewLine);
+                    textBox10.Text = "";
+                    send = false;
+                }
+            }
+        }
+
+        private void check(string choose)
+        {
+            while (messa == "") ;
+
+            if (messa == "BEGAN")
+            {
+                textBox11.Text += "Waiting for " + choose + "..." + Environment.NewLine;
+                textBox11.Text += "The conversation began..." + Environment.NewLine;
+
+                Thread t3 = new Thread(() => WaitForMessages());
+                Thread t4 = new Thread(() => SendMessages());
+                t3.Start();
+                t4.Start();
+            }
+            else if (messa == "quits")
+            {
+                textBox11.Text += "The interlocutor quits the conversation. Try to connect again." + Environment.NewLine;
+            }
+        }
+
+        private void textBox11_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            send = true;
+        }
+
+        private void textBox10_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            SendMessage(Stream, "1");
+            Thread t = new Thread(() => WaitingForAnswear());
+            t.Start();
+
+        }
+
+        private void WaitingForAnswear()
+        {
+            string m = "";
+
+            m = GetMessage(Stream);
+            textBox13.Text += m;
+            m = GetMessage(Stream);
+            textBox13.Text += m;
+
+        }
+
+
+        private void textBox13_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+            SendMessage(Stream, "y");
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            SendMessage(Stream, "n");
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            SendMessage(Stream, "r");
+        }
+
+        private void button26_Click(object sender, EventArgs e)
+        {
+            SendMessage(Stream, "s");
+        }
+
+        private void button27_Click(object sender, EventArgs e)
+        {
+            SendMessage(Stream, "p");
         }
     }
 }

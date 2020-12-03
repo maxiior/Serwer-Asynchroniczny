@@ -83,12 +83,31 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.button18 = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button19 = new System.Windows.Forms.Button();
+            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.button20 = new System.Windows.Forms.Button();
+            this.button21 = new System.Windows.Forms.Button();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.button22 = new System.Windows.Forms.Button();
+            this.button24 = new System.Windows.Forms.Button();
+            this.button25 = new System.Windows.Forms.Button();
+            this.button23 = new System.Windows.Forms.Button();
+            this.button26 = new System.Windows.Forms.Button();
+            this.button27 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel7.SuspendLayout();
+            this.panel8.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -152,6 +171,8 @@
             // 
             // panel6
             // 
+            this.panel6.Controls.Add(this.panel8);
+            this.panel6.Controls.Add(this.panel7);
             this.panel6.Controls.Add(this.label21);
             this.panel6.Controls.Add(this.button18);
             this.panel6.Controls.Add(this.textBox9);
@@ -769,6 +790,221 @@
             this.label21.Visible = false;
             this.label21.Click += new System.EventHandler(this.label21_Click);
             // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.button21);
+            this.panel7.Controls.Add(this.button20);
+            this.panel7.Controls.Add(this.textBox10);
+            this.panel7.Controls.Add(this.button19);
+            this.panel7.Controls.Add(this.comboBox1);
+            this.panel7.Controls.Add(this.textBox11);
+            this.panel7.Controls.Add(this.label25);
+            this.panel7.Location = new System.Drawing.Point(326, 100);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(776, 436);
+            this.panel7.TabIndex = 30;
+            this.panel7.Visible = false;
+            // 
+            // textBox11
+            // 
+            this.textBox11.Location = new System.Drawing.Point(358, 107);
+            this.textBox11.Multiline = true;
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new System.Drawing.Size(310, 218);
+            this.textBox11.TabIndex = 25;
+            this.textBox11.TextChanged += new System.EventHandler(this.textBox11_TextChanged);
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label25.ForeColor = System.Drawing.Color.White;
+            this.label25.Location = new System.Drawing.Point(234, 25);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(304, 39);
+            this.label25.TabIndex = 18;
+            this.label25.Text = "COMMUNICATOR";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(105, 128);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(135, 21);
+            this.comboBox1.TabIndex = 26;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // button19
+            // 
+            this.button19.BackColor = System.Drawing.Color.White;
+            this.button19.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button19.FlatAppearance.BorderSize = 0;
+            this.button19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button19.Location = new System.Drawing.Point(105, 161);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(135, 23);
+            this.button19.TabIndex = 29;
+            this.button19.Text = "CONNECT";
+            this.button19.UseVisualStyleBackColor = false;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(358, 343);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(310, 20);
+            this.textBox10.TabIndex = 30;
+            this.textBox10.TextChanged += new System.EventHandler(this.textBox10_TextChanged);
+            // 
+            // button20
+            // 
+            this.button20.BackColor = System.Drawing.Color.White;
+            this.button20.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button20.FlatAppearance.BorderSize = 0;
+            this.button20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button20.Location = new System.Drawing.Point(358, 372);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(135, 23);
+            this.button20.TabIndex = 31;
+            this.button20.Text = "SEND";
+            this.button20.UseVisualStyleBackColor = false;
+            this.button20.Visible = false;
+            this.button20.Click += new System.EventHandler(this.button20_Click);
+            // 
+            // button21
+            // 
+            this.button21.BackColor = System.Drawing.Color.White;
+            this.button21.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button21.FlatAppearance.BorderSize = 0;
+            this.button21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button21.Location = new System.Drawing.Point(105, 190);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(135, 23);
+            this.button21.TabIndex = 32;
+            this.button21.Text = "BACK";
+            this.button21.UseVisualStyleBackColor = false;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
+            // 
+            // panel8
+            // 
+            this.panel8.Controls.Add(this.button27);
+            this.panel8.Controls.Add(this.button26);
+            this.panel8.Controls.Add(this.button23);
+            this.panel8.Controls.Add(this.button25);
+            this.panel8.Controls.Add(this.button24);
+            this.panel8.Controls.Add(this.button22);
+            this.panel8.Controls.Add(this.textBox13);
+            this.panel8.Controls.Add(this.label23);
+            this.panel8.Location = new System.Drawing.Point(3, 1);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(776, 436);
+            this.panel8.TabIndex = 31;
+            this.panel8.Visible = false;
+            // 
+            // textBox13
+            // 
+            this.textBox13.Location = new System.Drawing.Point(253, 101);
+            this.textBox13.Multiline = true;
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(310, 218);
+            this.textBox13.TabIndex = 25;
+            this.textBox13.TextChanged += new System.EventHandler(this.textBox13_TextChanged);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label23.ForeColor = System.Drawing.Color.White;
+            this.label23.Location = new System.Drawing.Point(335, 25);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(117, 39);
+            this.label23.TabIndex = 18;
+            this.label23.Text = "GAME";
+            // 
+            // button22
+            // 
+            this.button22.BackColor = System.Drawing.Color.White;
+            this.button22.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button22.FlatAppearance.BorderSize = 0;
+            this.button22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button22.Location = new System.Drawing.Point(42, 211);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(135, 23);
+            this.button22.TabIndex = 32;
+            this.button22.Text = "PLAY";
+            this.button22.UseVisualStyleBackColor = false;
+            this.button22.Click += new System.EventHandler(this.button22_Click);
+            // 
+            // button24
+            // 
+            this.button24.BackColor = System.Drawing.Color.White;
+            this.button24.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button24.FlatAppearance.BorderSize = 0;
+            this.button24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button24.Location = new System.Drawing.Point(42, 242);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(62, 23);
+            this.button24.TabIndex = 33;
+            this.button24.Text = "YES";
+            this.button24.UseVisualStyleBackColor = false;
+            this.button24.Click += new System.EventHandler(this.button24_Click);
+            // 
+            // button25
+            // 
+            this.button25.BackColor = System.Drawing.Color.White;
+            this.button25.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button25.FlatAppearance.BorderSize = 0;
+            this.button25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button25.Location = new System.Drawing.Point(115, 242);
+            this.button25.Name = "button25";
+            this.button25.Size = new System.Drawing.Size(62, 23);
+            this.button25.TabIndex = 34;
+            this.button25.Text = "NO";
+            this.button25.UseVisualStyleBackColor = false;
+            this.button25.Click += new System.EventHandler(this.button25_Click);
+            // 
+            // button23
+            // 
+            this.button23.BackColor = System.Drawing.Color.White;
+            this.button23.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button23.FlatAppearance.BorderSize = 0;
+            this.button23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button23.Location = new System.Drawing.Point(253, 336);
+            this.button23.Name = "button23";
+            this.button23.Size = new System.Drawing.Size(62, 58);
+            this.button23.TabIndex = 35;
+            this.button23.Text = "R";
+            this.button23.UseVisualStyleBackColor = false;
+            this.button23.Click += new System.EventHandler(this.button23_Click);
+            // 
+            // button26
+            // 
+            this.button26.BackColor = System.Drawing.Color.White;
+            this.button26.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button26.FlatAppearance.BorderSize = 0;
+            this.button26.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button26.Location = new System.Drawing.Point(376, 336);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(62, 58);
+            this.button26.TabIndex = 36;
+            this.button26.Text = "S";
+            this.button26.UseVisualStyleBackColor = false;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
+            // 
+            // button27
+            // 
+            this.button27.BackColor = System.Drawing.Color.White;
+            this.button27.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button27.FlatAppearance.BorderSize = 0;
+            this.button27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button27.Location = new System.Drawing.Point(501, 336);
+            this.button27.Name = "button27";
+            this.button27.Size = new System.Drawing.Size(62, 58);
+            this.button27.TabIndex = 37;
+            this.button27.Text = "P";
+            this.button27.UseVisualStyleBackColor = false;
+            this.button27.Click += new System.EventHandler(this.button27_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -792,6 +1028,10 @@
             this.panel4.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -854,6 +1094,23 @@
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Button button21;
+        private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Button button22;
+        private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Button button25;
+        private System.Windows.Forms.Button button24;
+        private System.Windows.Forms.Button button23;
+        private System.Windows.Forms.Button button27;
+        private System.Windows.Forms.Button button26;
     }
 }
 
