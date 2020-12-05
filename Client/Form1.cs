@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client
@@ -17,10 +12,11 @@ namespace Client
         TcpClient Client;
         NetworkStream Stream;
 
+        private string UserLogin;
         private bool connected = false;
         private bool send = false;
         private string messa = "";
-        private Thread tmp1;
+        //private Thread tmp1;
 
 
         public static void SendMessage(NetworkStream s, string m)
@@ -123,6 +119,7 @@ namespace Client
 
             if (m=="success")
             {
+                UserLogin = textBox1.Text;
                 panel2.Visible = false;
                 panel6.Visible = true;
             }
@@ -267,8 +264,17 @@ namespace Client
         private void button15_Click(object sender, EventArgs e)
         {
             textBox8.Visible = false;
-            SendMessage(Stream, "4");
-            panel6.Visible = false;
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure?", "Are you sure?", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                SendMessage(Stream, "4");
+                panel6.Visible = false;
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                
+            }
         }
 
         private void textBox8_TextChanged(object sender, EventArgs e)
@@ -285,6 +291,8 @@ namespace Client
 
         private void button12_Click(object sender, EventArgs e)
         {
+            panel8.Location = new Point(0,0);
+            textBox13.Text = "";
             textBox8.Visible = false;
             panel8.Visible = true;
 
@@ -297,25 +305,49 @@ namespace Client
             string m = "";
             while(true)
             {
+                m = "";
                 m = GetMessage(Stream);
                 if (m.StartsWith("PLAY:"))
                 {
                     string[] info = m.Split(':');
                     textBox13.Text = "Do you want to PLAY with: " + info[1] + Environment.NewLine;
-                    m = "";
                 }
                 else if(m.StartsWith("You "))
                 {
                     textBox13.Text += m;
-                    m = "";
                     button28.Visible = true;
-                    break;
+                    button22.Visible = true;
+                    button24.Visible = true;
+                    button25.Visible = true;
                 }
-                else
+                else if (m.StartsWith("There ") || m.StartsWith("The oppo"))
                 {
                     textBox13.Text += m;
-                    m = "";
+                    button28.Visible = true;
+                    button22.Visible = true;
+                    button24.Visible = true;
+                    button25.Visible = true;
                 }
+                else if (m.StartsWith("STAT"))
+                {
+                    m = m.Replace("STAT", "");
+                    DialogResult dialogResult = MessageBox.Show(m, UserLogin, MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        SendMessage(Stream, "y");
+                        textBox3.Text = "";
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        SendMessage(Stream, "n");
+                        button28.Visible = true;
+                        button22.Visible = true;
+                        button24.Visible = true;
+                        button25.Visible = true;
+                    }
+                }
+                else if (m == "q") return;
+                else textBox13.Text += m;
             }
         }
 
@@ -375,16 +407,14 @@ namespace Client
 
             if (m == "success")
             {
-                label21.Visible = true;
-                label21.Text = "Password was changed successfully.";
+                MessageBox.Show("Password was changed successfully.");
                 label20.Visible = false;
                 textBox9.Visible = false;
                 button18.Visible = false;
             }
             else if (m == "wrong")
             {
-                label21.Visible = true;
-                label21.Text = "Wrong password. Try again.";
+                MessageBox.Show("Password should be 5 to 20 characters long. Try again.");
             }
         }
 
@@ -484,21 +514,13 @@ namespace Client
 
         private void button22_Click(object sender, EventArgs e)
         {
+            textBox13.Text = "";
             button28.Visible = false;
+            button22.Visible = false;
+            button24.Visible = false;
+            button25.Visible = false;
+
             SendMessage(Stream, "1");
-            Thread t = new Thread(() => WaitingForAnswear());
-            t.Start();
-        }
-
-        private void WaitingForAnswear()
-        {
-            string m = "";
-
-            m = GetMessage(Stream);
-            textBox13.Text += m;
-            m = GetMessage(Stream);
-            textBox13.Text += m;
-
         }
 
 
@@ -509,12 +531,12 @@ namespace Client
 
         private void button24_Click(object sender, EventArgs e)
         {
-            button28.Visible = false;
             SendMessage(Stream, "y");
         }
 
         private void button25_Click(object sender, EventArgs e)
         {
+            textBox13.Text = "";
             SendMessage(Stream, "n");
         }
 
@@ -536,6 +558,7 @@ namespace Client
         private void button28_Click(object sender, EventArgs e)
         {
             panel8.Visible = false;
+            SendMessage(Stream, "q");
         }
     }
 }

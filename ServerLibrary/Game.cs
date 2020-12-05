@@ -14,6 +14,7 @@ namespace ServerLibrary
         private int OpponentPoints = 0;
 
         public string opponentAnswere = "";
+        public string hostAnswere = "";
         private string opponent = "";
         private string host = "";
 
@@ -92,6 +93,8 @@ namespace ServerLibrary
 
                 if (opponentAnswere == "y" && s < 100)
                 {
+                    playagian:
+
                     Choose(c1);
                     while (this.OpponentChoice.Count < 1 && connected) ;
                     if(!connected)
@@ -228,6 +231,11 @@ namespace ServerLibrary
                         MessageTransmission.SendMessage(c2, Environment.NewLine);
                         MessageTransmission.SendMessage(c2, "You won the match! " + OpponentPoints + ":" + PlayerPoints + Environment.NewLine + Environment.NewLine);
                         MessageTransmission.SendMessage(c1, "You lost the match! " + PlayerPoints + ":" + OpponentPoints + Environment.NewLine + Environment.NewLine);
+
+                        MessageTransmission.SendMessage(c2, "STATYou won the match! " + OpponentPoints + ":" + PlayerPoints 
+                            + Environment.NewLine + "Your current ELO: " + sql.GetELO(Opponent) + Environment.NewLine + "Do you want to play again?");
+                        MessageTransmission.SendMessage(c1, "STATYou lost the match! " + PlayerPoints + ":" + OpponentPoints 
+                            + Environment.NewLine + "Your current ELO: " + sql.GetELO(Host) + Environment.NewLine + "Do you want to play again?");
                     }
                     else if (OpponentPoints < PlayerPoints)
                     {
@@ -239,6 +247,11 @@ namespace ServerLibrary
                         MessageTransmission.SendMessage(c2, Environment.NewLine);
                         MessageTransmission.SendMessage(c2, "You lost the match! " + OpponentPoints + ":" + PlayerPoints + Environment.NewLine + Environment.NewLine);
                         MessageTransmission.SendMessage(c1, "You won the match! " + PlayerPoints + ":" + OpponentPoints + Environment.NewLine + Environment.NewLine);
+
+                        MessageTransmission.SendMessage(c2, "STATYou lost the match! " + OpponentPoints + ":" + PlayerPoints
+                            + Environment.NewLine + "Your current ELO: " + sql.GetELO(Opponent) + Environment.NewLine + "Do you want to play again?");
+                        MessageTransmission.SendMessage(c1, "STATYou won the match! " + PlayerPoints + ":" + OpponentPoints
+                            + Environment.NewLine + "Your current ELO: " + sql.GetELO(Host) + Environment.NewLine + "Do you want to play again?");
                     }
                     else
                     {
@@ -250,19 +263,51 @@ namespace ServerLibrary
                         MessageTransmission.SendMessage(c2, Environment.NewLine);
                         MessageTransmission.SendMessage(c2, "You draw the match! " + PlayerPoints + ":" + OpponentPoints + Environment.NewLine + Environment.NewLine);
                         MessageTransmission.SendMessage(c1, "You draw the match! " + OpponentPoints + ":" + PlayerPoints + Environment.NewLine + Environment.NewLine);
+
+                        MessageTransmission.SendMessage(c2, "STATYou draw the match! " + OpponentPoints + ":" + PlayerPoints
+                            + Environment.NewLine + "Your current ELO: " + sql.GetELO(Opponent) + Environment.NewLine + "Do you want to play again?");
+                        MessageTransmission.SendMessage(c1, "STATYou draw the match! " + PlayerPoints + ":" + OpponentPoints
+                            + Environment.NewLine + "Your current ELO: " + sql.GetELO(Host) + Environment.NewLine + "Do you want to play again?");
+                    }
+
+                    string a1 = MessageTransmission.GetMessage(c1);
+
+                    if(a1 == "y")
+                    {
+                        PlayerPoints = 0;
+                        OpponentPoints = 0;
+                        hostAnswere = "y";
+                        MessageTransmission.SendMessage(c1, "Waiting for opponent..." + Environment.NewLine);
+                        opponentAnswere = "";
+                        s = 0;
+                        while (s < 100)
+                        {
+                            Thread.Sleep(100);
+                            s++;
+                            if (s == 100 || opponentAnswere != "") break;
+                        }
+                        if (opponentAnswere == "y" && s < 100)
+                        {
+                            MessageTransmission.SendMessage(c1, "Opponent is ready to play." + Environment.NewLine);
+                            goto playagian;
+                        }
+                        else
+                        {
+                            MessageTransmission.SendMessage(c1, "Opponent left the game." + Environment.NewLine);
+                        }
                     }
                 }
                 else
                 {
                     this.Opponent = "";
                     MessageTransmission.SendMessage(c1, "The opponent quits the game. Try to connect again." + Environment.NewLine);
-                    MessageTransmission.SendMessage(c1, Environment.NewLine);
+                    //MessageTransmission.SendMessage(c1, Environment.NewLine);
                 }
             }
             else
             {
                 MessageTransmission.SendMessage(c1, "There are no other players at the moment." + Environment.NewLine);
-                MessageTransmission.SendMessage(c1, Environment.NewLine);
+                //MessageTransmission.SendMessage(c1, Environment.NewLine);
             }
         }
 
@@ -272,7 +317,7 @@ namespace ServerLibrary
         /// <param name="Stream">Strumień konkretnego gracza.</param>
         private void Choose(NetworkStream Stream)
         {
-            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: " + Environment.NewLine);
+            MessageTransmission.SendMessage(Stream, "Choose rock, paper, scissors: " + Environment.NewLine);
             string w = MessageTransmission.GetMessage(Stream);
             PlayerChoice.Add(w);
         }

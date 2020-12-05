@@ -87,11 +87,11 @@ namespace ServerLibrary
                         case "3":
                             sql.ShowAllUsers(Stream);
                             break;
-                        default:
-                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, "There is no such option. Try again." + Environment.NewLine);
-                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                            break;
+                        //default:
+                            //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, "There is no such option. Try again." + Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                            //break;
                     }
                 }
                 catch (IOException)
@@ -367,115 +367,203 @@ namespace ServerLibrary
                         break;
                     case "y":
                         int gameIndex = -1;
-                        for (int i = 0; i < activeGames.Count; i++)
+                        try
                         {
-                            if (activeGames[i].Opponent == u.Login) gameIndex = i;
-                        }
-
-                        if (gameIndex != -1)
-                        {
-                            activeGames[gameIndex].opponentAnswere = "y";
-                            busyUsers.Add(u);
-
-                            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: " + Environment.NewLine);
-                            string w = MessageTransmission.GetMessage(Stream);
-
-                            for (int i = 0; i < activeGames.Count; i++)
-                                if (activeGames[i].Opponent == u.Login) gameIndex = i;
-                            activeGames[gameIndex].OpponentChoice.Add(w);
                             
-                            if(activeGames[gameIndex].connected == false)
-                            {
-                                MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                                MessageTransmission.SendMessage(Stream, "The opponent quits the game. Try to connect again." + Environment.NewLine);
-                                MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                                busyUsers.Remove(u);
-                                activeGames.Remove(activeGames[gameIndex]);
-                                break;
-                            }
-
-                            while (activeGames[gameIndex].PlayerChoice.Count < 1)
-                            {
-                                for (int i = 0; i < activeGames.Count; i++)
-                                    if (activeGames[i].Opponent == u.Login) gameIndex = i;
-                            }
-                            Thread.Sleep(50);
-
-                            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: " + Environment.NewLine);
-                            w = MessageTransmission.GetMessage(Stream);
-
                             for (int i = 0; i < activeGames.Count; i++)
-                                if (activeGames[i].Opponent == u.Login) gameIndex = i;
-                            activeGames[gameIndex].OpponentChoice.Add(w);
-
-                            if (activeGames[gameIndex].connected == false)
                             {
-                                MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                                MessageTransmission.SendMessage(Stream, "The opponent quits the game. Try to connect again." + Environment.NewLine);
-                                MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                                busyUsers.Remove(u);
-                                activeGames.Remove(activeGames[gameIndex]);
-                                break;
+                                if (activeGames[i].Opponent == u.Login)
+                                {
+                                    gameIndex = i;
+                                    break;
+                                }
+                                else gameIndex = -1;
                             }
+                            if (gameIndex == -1) throw new Exception();
 
-                            while (activeGames[gameIndex].PlayerChoice.Count < 2)
+                            if (gameIndex != -1)
                             {
+                                activeGames[gameIndex].opponentAnswere = "y";
+                                busyUsers.Add(u);
+
+                            playagian:
+
+                                MessageTransmission.SendMessage(Stream, "Choose rock, paper, scissors: " + Environment.NewLine);
+                                string w = MessageTransmission.GetMessage(Stream);
+
                                 for (int i = 0; i < activeGames.Count; i++)
-                                    if (activeGames[i].Opponent == u.Login) gameIndex = i;
-                            }
-                            Thread.Sleep(50);
+                                {
+                                    if (activeGames[i].Opponent == u.Login)
+                                    {
+                                        gameIndex = i;
+                                        break;
+                                    }
+                                    else gameIndex = -1;
+                                }
+                                if (gameIndex == -1) throw new Exception();
+                                activeGames[gameIndex].OpponentChoice.Add(w);
 
-                            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: " + Environment.NewLine);
-                            w = MessageTransmission.GetMessage(Stream);
+                                if (activeGames[gameIndex].connected == false)
+                                {
+                                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                                    MessageTransmission.SendMessage(Stream, "The opponent quits the game. Try to connect again." + Environment.NewLine);
+                                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                                    busyUsers.Remove(u);
+                                    activeGames.Remove(activeGames[gameIndex]);
+                                    break;
+                                }
 
-                            for (int i = 0; i < activeGames.Count; i++)
-                                if (activeGames[i].Opponent == u.Login) gameIndex = i;
-                            activeGames[gameIndex].OpponentChoice.Add(w);
+                                while (activeGames[gameIndex].PlayerChoice.Count < 1)
+                                {
+                                    for (int i = 0; i < activeGames.Count; i++)
+                                        if (activeGames[i].Opponent == u.Login) gameIndex = i;
+                                }
+                                Thread.Sleep(50);
 
-                            if (activeGames[gameIndex].connected == false)
-                            {
-                                MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                                MessageTransmission.SendMessage(Stream, "The opponent quits the game. Try to connect again." + Environment.NewLine);
-                                MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                                busyUsers.Remove(u);
-                                activeGames.Remove(activeGames[gameIndex]);
-                                break;
-                            }
+                                MessageTransmission.SendMessage(Stream, "Choose rock, paper, scissors: " + Environment.NewLine);
+                                w = MessageTransmission.GetMessage(Stream);
 
-                            while (activeGames[gameIndex].PlayerChoice.Count < 3)
-                            {
                                 for (int i = 0; i < activeGames.Count; i++)
-                                    if (activeGames[i].Opponent == u.Login) gameIndex = i;
-                            }
-                            Thread.Sleep(50);
+                                {
+                                    if (activeGames[i].Opponent == u.Login)
+                                    {
+                                        gameIndex = i;
+                                        break;
+                                    }
+                                    else gameIndex = -1;
+                                }
+                                if (gameIndex == -1) throw new Exception();
+                                activeGames[gameIndex].OpponentChoice.Add(w);
 
-                            MessageTransmission.SendMessage(Stream, "Choose [r]ock, [p]aper, [s]cissors: " + Environment.NewLine);
-                            w = MessageTransmission.GetMessage(Stream);
+                                if (activeGames[gameIndex].connected == false)
+                                {
+                                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                                    MessageTransmission.SendMessage(Stream, "The opponent quits the game. Try to connect again." + Environment.NewLine);
+                                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                                    busyUsers.Remove(u);
+                                    activeGames.Remove(activeGames[gameIndex]);
+                                    break;
+                                }
 
-                            for (int i = 0; i < activeGames.Count; i++)
-                                if (activeGames[i].Opponent == u.Login) gameIndex = i;
-                            activeGames[gameIndex].OpponentChoice.Add(w);
+                                while (activeGames[gameIndex].PlayerChoice.Count < 2)
+                                {
+                                    for (int i = 0; i < activeGames.Count; i++)
+                                        if (activeGames[i].Opponent == u.Login) gameIndex = i;
+                                }
+                                Thread.Sleep(50);
 
-                            if (activeGames[gameIndex].connected == false)
-                            {
-                                MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                                MessageTransmission.SendMessage(Stream, "The opponent quits the game. Try to connect again." + Environment.NewLine);
-                                MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                                busyUsers.Remove(u);
-                                activeGames.Remove(activeGames[gameIndex]);
-                                break;
-                            }
+                                MessageTransmission.SendMessage(Stream, "Choose rock, paper, scissors: " + Environment.NewLine);
+                                w = MessageTransmission.GetMessage(Stream);
 
-                            while (activeGames[gameIndex].PlayerChoice.Count < 4)
-                            {
                                 for (int i = 0; i < activeGames.Count; i++)
-                                    if (activeGames[i].Opponent == u.Login) gameIndex = i;
-                            }
-                            Thread.Sleep(50);
+                                {
+                                    if (activeGames[i].Opponent == u.Login)
+                                    {
+                                        gameIndex = i;
+                                        break;
+                                    }
+                                    else gameIndex = -1;
+                                }
+                                if (gameIndex == -1) throw new Exception();
+                                activeGames[gameIndex].OpponentChoice.Add(w);
 
-                            busyUsers.Remove(u);
-                            Thread.Sleep(300);
+                                if (activeGames[gameIndex].connected == false)
+                                {
+                                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                                    MessageTransmission.SendMessage(Stream, "The opponent quits the game. Try to connect again." + Environment.NewLine);
+                                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                                    busyUsers.Remove(u);
+                                    activeGames.Remove(activeGames[gameIndex]);
+                                    break;
+                                }
+
+                                while (activeGames[gameIndex].PlayerChoice.Count < 3)
+                                {
+                                    for (int i = 0; i < activeGames.Count; i++)
+                                        if (activeGames[i].Opponent == u.Login) gameIndex = i;
+                                }
+                                Thread.Sleep(50);
+
+                                MessageTransmission.SendMessage(Stream, "Choose rock, paper, scissors: " + Environment.NewLine);
+                                w = MessageTransmission.GetMessage(Stream);
+
+                                for (int i = 0; i < activeGames.Count; i++)
+                                {
+                                    if (activeGames[i].Opponent == u.Login)
+                                    {
+                                        gameIndex = i;
+                                        break;
+                                    }
+                                    else gameIndex = -1;
+                                }
+                                if (gameIndex == -1) throw new Exception();
+                                activeGames[gameIndex].OpponentChoice.Add(w);
+
+                                if (activeGames[gameIndex].connected == false)
+                                {
+                                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                                    MessageTransmission.SendMessage(Stream, "The opponent quits the game. Try to connect again." + Environment.NewLine);
+                                    //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                                    busyUsers.Remove(u);
+                                    activeGames.Remove(activeGames[gameIndex]);
+                                    break;
+                                }
+
+                                while (activeGames[gameIndex].PlayerChoice.Count < 4)
+                                {
+                                    for (int i = 0; i < activeGames.Count; i++)
+                                        if (activeGames[i].Opponent == u.Login) gameIndex = i;
+                                }
+                                Thread.Sleep(50);
+
+                                string a1 = MessageTransmission.GetMessage(Stream);
+                                if (a1 == "y")
+                                {
+                                    MessageTransmission.SendMessage(Stream, "Waiting for opponent..." + Environment.NewLine);
+
+                                    int se = 0;
+
+                                    activeGames[gameIndex].opponentAnswere = "y";
+
+                                    while (se < 100)
+                                    {
+                                        Thread.Sleep(100);
+                                        se++;
+
+                                        if (se == 100 || activeGames[gameIndex].hostAnswere != "") break;
+                                    }
+
+                                    for (int i = 0; i < activeGames.Count; i++)
+                                    {
+                                        if (activeGames[i].Opponent == u.Login)
+                                        {
+                                            gameIndex = i;
+                                            break;
+                                        }
+                                        else gameIndex = -1;
+                                    }
+                                    if (gameIndex == -1) throw new Exception();
+
+                                    if (activeGames[gameIndex].hostAnswere == "y" && se < 100)
+                                    {
+                                        MessageTransmission.SendMessage(Stream, "Opponent is ready to play." + Environment.NewLine);
+                                        goto playagian;
+                                    }
+                                    else
+                                    {
+                                        MessageTransmission.SendMessage(Stream, "Opponent left the game." + Environment.NewLine);
+                                    }
+                                }
+
+                                busyUsers.Remove(u);
+                                Thread.Sleep(300);
+                            }
                         }
+                        catch(Exception)
+                        {
+                            MessageTransmission.SendMessage(Stream, "Opponent left the game." + Environment.NewLine);
+                        }
+                            
 
                         int conversationIndex = -1;
                         for (int i = 0; i < activeConversation.Count; i++)
@@ -524,7 +612,7 @@ namespace ServerLibrary
                                 }
                             }
                             if (!activeConversation[conversationIndex].connected) activeConversation.Remove(activeConversation[conversationIndex]);
-                            MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                            //MessageTransmission.SendMessage(Stream, Environment.NewLine);
                             busyUsers.Remove(u);
                         }
                         break;
@@ -543,9 +631,12 @@ namespace ServerLibrary
                         }
                         if (conversationIndex != -1) activeConversation[conversationIndex].interlocutorAnswere = "n";
                         break;
-                    default:
-                        MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                    case "q":
+                        MessageTransmission.SendMessage(Stream, "q");
                         break;
+                    //default:
+                        //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                        //break;
                 }
             }
         }

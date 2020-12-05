@@ -452,6 +452,30 @@ namespace ServerLibrary
 
             }
         }
+        /// <summary>
+        /// Zwraca punktacje ELO gracza.
+        /// </summary>
+        /// <param name="login">Nazwa gracza.</param>
+        /// <returns>ELO gracza.</returns>
+        public string GetELO(string login)
+        {
+            using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
+            {
+                try
+                {
+                    var st = DbConn.QuerySingleOrDefault($"SELECT Elo FROM Users WHERE Login='{login}';");
+
+                    string r = Convert.ToString(st.Elo);
+
+                    return r;
+                }
+                catch (Exception e)
+                {
+                    return "";
+                }
+
+            }
+        }
 
         private static string ConnectionString()
         {
