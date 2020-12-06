@@ -16,8 +16,6 @@ namespace Client
         private bool connected = false;
         private bool send = false;
         private string messa = "";
-        //private Thread tmp1;
-
 
         public static void SendMessage(NetworkStream s, string m)
         {
@@ -36,7 +34,6 @@ namespace Client
                 if (m != "\r\n") return m;
             }
         }
-
 
         public Form1()
         {
@@ -291,16 +288,17 @@ namespace Client
 
         private void button12_Click(object sender, EventArgs e)
         {
+            SendMessage(Stream, "nobussy");
             panel8.Location = new Point(0,0);
             textBox13.Text = "";
             textBox8.Visible = false;
             panel8.Visible = true;
 
-            Thread tmp1 = new Thread(() => WaitForInvite());
+            Thread tmp1 = new Thread(() => WaitForInviteGame());
             tmp1.Start();
         }
 
-        private void WaitForInvite()
+        private void WaitForInviteGame()
         {
             string m = "";
             while(true)
@@ -351,20 +349,65 @@ namespace Client
             }
         }
 
+        //Communicator
         private void button14_Click(object sender, EventArgs e)
         {
+            SendMessage(Stream, "nobussy");
+            SendMessage(Stream, "freeusers");
             panel7.Location = new Point(0, 0);
-            panel7.Visible = true;
-            SendMessage(Stream, "3");
+            textBox11.Text = "";
             textBox8.Visible = false;
-            string l = GetMessage(Stream);
+            panel7.Visible = true;
 
-            if(l!="noother")
+            string m = GetMessage(Stream);
+
+            if (m != "noother")
             {
-                string[] logins = l.Split(' ');
+                comboBox1.Items.Clear();
+                string[] logins = m.Split(':');
 
-                foreach (string i in logins)
-                    comboBox1.Items.Add(i);
+                for (int i = 0; i < logins.Length; i++)
+                {
+                    comboBox1.Items.Add(logins[i]);
+                }
+            }
+            else textBox11.Text += "There are no other players at the moment.";
+
+            Thread tmp1 = new Thread(() => WaitForInviteCommunicator());
+            tmp1.Start();
+        }
+
+        private void WaitForInviteCommunicator()
+        {
+            string m = "";
+            while (true)
+            {
+                m = "";
+                m = GetMessage(Stream);
+
+                if (m == "BEGAN")
+                {
+                    textBox11.Text += "The conversation began..." + Environment.NewLine;
+
+                    Thread t4 = new Thread(() => SendMessages());
+                    t4.Start();
+                }
+                else if (m == "quits")
+                {
+                    connected = false;
+                    textBox11.Text += "The interlocutor quits the conversation. Try to connect again." + Environment.NewLine;
+                }
+                else if (m == "noother")
+                {
+                    textBox11.Text = "";
+                    textBox11.Text += "There are no other players at the moment." + Environment.NewLine;
+                }
+                else if(m == "finish")
+                {
+                    textBox11.Text += "You have finished the conversation." + Environment.NewLine;
+                }
+                else if (m == "q") return;
+                else textBox11.Text += m;
             }
         }
 
@@ -430,7 +473,9 @@ namespace Client
 
         private void button21_Click(object sender, EventArgs e)
         {
-            if(connected==false) SendMessage(Stream, "0");
+            SendMessage(Stream, "q");
+
+            if (connected==false) SendMessage(Stream, "0");
             else SendMessage(Stream, "exit");
             panel7.Visible = false;
             connected = false;
@@ -441,59 +486,26 @@ namespace Client
             string choose = comboBox1.Text;
             string index = (comboBox1.SelectedIndex+1).ToString();
 
+            SendMessage(Stream, "3");
             SendMessage(Stream, index);
 
             if (choose!="")
             {
                 connected = true;
                 textBox11.Text = "Waiting for " + choose + "..." + Environment.NewLine;
-
-                Thread t = new Thread(() => messa = GetMessage(Stream));
-                Thread t2 = new Thread(() => check(choose));
-                t.Start();
-                t2.Start();
             }
         }
-
-        private void WaitForMessages()
-        {
-            string m = "";
-            while(connected)
-            {
-                m = GetMessage(Stream);
-                textBox11.Text += m + Environment.NewLine;
-            }
-        }
+        //To trzeba jakoś wyłączać
         private void SendMessages()
         {
-            while(connected)
+            while(true)
             {
                 if(send)
                 {
-                    SendMessage(Stream, textBox10.Text + Environment.NewLine);
+                    SendMessage(Stream, textBox10.Text);
                     textBox10.Text = "";
                     send = false;
                 }
-            }
-        }
-
-        private void check(string choose)
-        {
-            while (messa == "") ;
-
-            if (messa == "BEGAN")
-            {
-                textBox11.Text += "Waiting for " + choose + "..." + Environment.NewLine;
-                textBox11.Text += "The conversation began..." + Environment.NewLine;
-
-                Thread t3 = new Thread(() => WaitForMessages());
-                Thread t4 = new Thread(() => SendMessages());
-                t3.Start();
-                t4.Start();
-            }
-            else if (messa == "quits")
-            {
-                textBox11.Text += "The interlocutor quits the conversation. Try to connect again." + Environment.NewLine;
             }
         }
 
@@ -504,7 +516,7 @@ namespace Client
 
         private void button20_Click(object sender, EventArgs e)
         {
-            send = true;
+            
         }
 
         private void textBox10_TextChanged(object sender, EventArgs e)
@@ -559,6 +571,21 @@ namespace Client
         {
             panel8.Visible = false;
             SendMessage(Stream, "q");
+        }
+
+        private void button30_Click(object sender, EventArgs e)
+        {
+            SendMessage(Stream, "yc");
+        }
+
+        private void button29_Click(object sender, EventArgs e)
+        {
+            SendMessage(Stream, "n");
+        }
+
+        private void button20_Click_1(object sender, EventArgs e)
+        {
+            send = true;
         }
     }
 }

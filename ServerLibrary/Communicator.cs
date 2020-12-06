@@ -55,13 +55,12 @@ namespace ServerLibrary
             if (users.Count == 0) return null;
 
             //MessageTransmission.SendMessage(s, "Players that you can communicate with:" + Environment.NewLine);
-            string logins = "";
-            for (int i=0; i<users.Count; i++)
-            {
-                logins += users[i].Login + " ";
-                //MessageTransmission.SendMessage(s, (i+1).ToString() + ". " + users[i].Login + "." + Environment.NewLine);
-            }
-            MessageTransmission.SendMessage(s, logins);
+            //string logins = "";
+            //for (int i=0; i<users.Count; i++)
+            //{
+            //    logins += users[i].Login + " ";
+            //    MessageTransmission.SendMessage(s, (i+1).ToString() + ". " + users[i].Login + "." + Environment.NewLine);
+            //}
             //MessageTransmission.SendMessage(s, Environment.NewLine);
             //MessageTransmission.SendMessage(s, "Choose [type '0' to resign]:" + Environment.NewLine);
 
@@ -115,7 +114,7 @@ namespace ServerLibrary
                 //MessageTransmission.SendMessage(c1, Environment.NewLine);
                 //MessageTransmission.SendMessage(c1, "Waiting for " + Interlocutor + "..." + Environment.NewLine);
 
-                MessageTransmission.SendMessage(c2, Environment.NewLine + "Do you want to SPEAK with: " + player + "? [y/n]" + Environment.NewLine);
+                MessageTransmission.SendMessage(c2, "Do you want to SPEAK with: " + player + "? [yes/no]" + Environment.NewLine);
 
                 int s = 0;
 
@@ -142,12 +141,14 @@ namespace ServerLibrary
                         if (connected) m = MessageTransmission.GetMessage(c1);
                         if (!connected)
                         {
-                            MessageTransmission.SendMessage(c1, "The interlocutor ended the conversation." + Environment.NewLine);
+                            //MessageTransmission.SendMessage(c1, "The interlocutor ended the conversation." + Environment.NewLine);
+                            MessageTransmission.SendMessage(c1, "quits");
                             break;
                         }
                         if (m == "exit")
                         {
-                            MessageTransmission.SendMessage(c1, "You have finished the conversation." + Environment.NewLine);
+                            //MessageTransmission.SendMessage(c1, "You have finished the conversation." + Environment.NewLine);
+                            MessageTransmission.SendMessage(c1, "finish");
                             connected = false;
                             break;
                         }
@@ -157,7 +158,7 @@ namespace ServerLibrary
                             sql.AddMessageToDB(player, Interlocutor, m, now.ToString("yyyy-MM-dd hh:mm"));
                         }
                     }
-                    MessageTransmission.SendMessage(c1, Environment.NewLine);
+                    //MessageTransmission.SendMessage(c1, Environment.NewLine);
                 }
                 else
                 {

@@ -214,6 +214,35 @@ namespace ServerLibrary
             }
         }
 
+        private void GetInterlocutorList(NetworkStream s, string player)
+        {
+            List<User> users = new List<User>();
+            bool b;
+
+            for (int i = 0; i < loggedPlayers.Count; i++)
+            {
+                b = false;
+                for (int j = 0; j < busyUsers.Count; j++)
+                {
+                    if (loggedPlayers[i] == busyUsers[j])
+                    {
+                        b = true;
+                        break;
+                    }
+                }
+                if (b == false && loggedPlayers[i].Login != player) users.Add(loggedPlayers[i]);
+            }
+
+            string logins = "";
+            for (int i = 0; i < users.Count; i++)
+            {
+                if (i != users.Count - 1) logins += users[i].Login + ":";
+                else logins += users[i].Login;
+            }
+            if(logins!="") MessageTransmission.SendMessage(s, logins);
+            else MessageTransmission.SendMessage(s, "noother");
+        }
+
         /// <summary>
         /// Okno wyboru użytkownika, gdy jest już zalogowany.
         /// </summary>
@@ -222,6 +251,8 @@ namespace ServerLibrary
         private void logged(User u, NetworkStream Stream, TcpClient client)
         {
             string option;
+
+            busyUsers.Add(u);
 
             u.Hash = Stream.GetHashCode();
             u.TCPHash = client.GetHashCode();
@@ -369,7 +400,6 @@ namespace ServerLibrary
                         int gameIndex = -1;
                         try
                         {
-                            
                             for (int i = 0; i < activeGames.Count; i++)
                             {
                                 if (activeGames[i].Opponent == u.Login)
@@ -563,8 +593,8 @@ namespace ServerLibrary
                         {
                             MessageTransmission.SendMessage(Stream, "Opponent left the game." + Environment.NewLine);
                         }
-                            
-
+                        break;
+                    case "yc":
                         int conversationIndex = -1;
                         for (int i = 0; i < activeConversation.Count; i++)
                         {
@@ -589,17 +619,19 @@ namespace ServerLibrary
 
                                     if (activeConversation[conversationIndex].connected == false)
                                     {
-                                        MessageTransmission.SendMessage(Stream, "The interlocutor ended the conversation." + Environment.NewLine);
+                                        //MessageTransmission.SendMessage(Stream, "The interlocutor ended the conversation." + Environment.NewLine);
+                                        MessageTransmission.SendMessage(Stream, "quits");
                                         break;
                                     }
                                     if (m == "exit")
                                     {
-                                        MessageTransmission.SendMessage(Stream, "You have finished the conversation." + Environment.NewLine);
+                                        MessageTransmission.SendMessage(Stream, "finish");
+                                        //MessageTransmission.SendMessage(Stream, "You have finished the conversation." + Environment.NewLine);
                                         activeConversation[conversationIndex].connected = false;
                                         break;
                                     }
 
-                                    if (m!="" && activeConversation[conversationIndex].Interlocutor == u.Login && activeConversation[conversationIndex].connected)
+                                    if (m != "" && activeConversation[conversationIndex].Interlocutor == u.Login && activeConversation[conversationIndex].connected)
                                     {
                                         MessageTransmission.SendMessage(activeConversation[conversationIndex].c1, m + " [" + u.Login + "]" + " [" + now.ToString("yyyy-MM-dd hh:mm") + "]" + Environment.NewLine);
                                         sql.AddMessageToDB(u.Login, activeConversation[conversationIndex].Host, m, now.ToString("yyyy-MM-dd hh:mm"));
@@ -607,7 +639,8 @@ namespace ServerLibrary
                                 }
                                 catch (Exception e)
                                 {
-                                    MessageTransmission.SendMessage(Stream, "The interlocutor ended the conversation." + Environment.NewLine);
+                                    //MessageTransmission.SendMessage(Stream, "The interlocutor ended the conversation." + Environment.NewLine);
+                                    MessageTransmission.SendMessage(Stream, "quits");
                                     break;
                                 }
                             }
@@ -633,8 +666,15 @@ namespace ServerLibrary
                         break;
                     case "q":
                         MessageTransmission.SendMessage(Stream, "q");
+                        busyUsers.Add(u);
                         break;
-                    //default:
+                    case "nobussy":
+                        busyUsers.Remove(u);
+                        break;
+                    case "freeusers":
+                        GetInterlocutorList(Stream, u.Login);
+                        break;
+                        //default:
                         //MessageTransmission.SendMessage(Stream, Environment.NewLine);
                         //break;
                 }
