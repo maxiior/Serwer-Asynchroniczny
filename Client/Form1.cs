@@ -17,24 +17,6 @@ namespace Client
         private bool send = false;
         private string messa = "";
 
-        public static void SendMessage(NetworkStream s, string m)
-        {
-            byte[] buffer = new byte[2048];
-            buffer = Encoding.ASCII.GetBytes(m);
-            s.Write(buffer, 0, buffer.Length);
-        }
-
-        public static string GetMessage(NetworkStream s)
-        {
-            while (true)
-            {
-                byte[] buffer = new byte[2048];
-                s.Read(buffer, 0, buffer.Length);
-                string m = Encoding.ASCII.GetString(buffer).Replace("\0", "");
-                if (m != "\r\n") return m;
-            }
-        }
-
         public Form1()
         {
             InitializeComponent();
@@ -61,8 +43,8 @@ namespace Client
             panel5.Location = new Point(0, 0);
             panel5.Visible = true;
 
-            SendMessage(Stream, "3");
-            string m = GetMessage(Stream);
+            MessageTransmission.SendMessage(Stream, "3");
+            string m = MessageTransmission.GetMessage(Stream);
 
             textBox7.Text = m;
         }
@@ -101,8 +83,8 @@ namespace Client
 
             if (login!="" && password!="")
             {
-                SendMessage(Stream, "1");
-                SendMessage(Stream, login + " " + password);
+                MessageTransmission.SendMessage(Stream, "1");
+                MessageTransmission.SendMessage(Stream, login + " " + password);
             }
             else if (login == "" || password == "")
             {
@@ -112,7 +94,7 @@ namespace Client
                 return;
             }
 
-            string m = GetMessage(Stream);
+            string m = MessageTransmission.GetMessage(Stream);
 
             if (m=="success")
             {
@@ -167,8 +149,8 @@ namespace Client
 
             if (login != "" && password != "")
             {
-                SendMessage(Stream, "2");
-                SendMessage(Stream, login + " " + password);
+                MessageTransmission.SendMessage(Stream, "2");
+                MessageTransmission.SendMessage(Stream, login + " " + password);
             }
             else if (login == "" || password == "")
             {
@@ -178,7 +160,7 @@ namespace Client
                 return;
             }
 
-            string m = GetMessage(Stream);
+            string m = MessageTransmission.GetMessage(Stream);
 
             if (m == "success")
             {
@@ -254,7 +236,7 @@ namespace Client
         private void button17_Click(object sender, EventArgs e)
         {
             textBox8.Visible = false;
-            SendMessage(Stream, "6");
+            MessageTransmission.SendMessage(Stream, "6");
             panel6.Visible = false;
         }
 
@@ -265,7 +247,7 @@ namespace Client
             DialogResult dialogResult = MessageBox.Show("Are you sure?", "Are you sure?", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                SendMessage(Stream, "4");
+                MessageTransmission.SendMessage(Stream, "4");
                 panel6.Visible = false;
             }
             else if (dialogResult == DialogResult.No)
@@ -281,14 +263,15 @@ namespace Client
 
         private void button13_Click(object sender, EventArgs e)
         {
-            SendMessage(Stream, "2");
+            MessageTransmission.SendMessage(Stream, "2");
             textBox8.Visible = true;
-            textBox8.Text = GetMessage(Stream);
+            textBox8.Text = MessageTransmission.GetMessage(Stream);
         }
 
+        //Game
         private void button12_Click(object sender, EventArgs e)
         {
-            SendMessage(Stream, "nobussy");
+            MessageTransmission.SendMessage(Stream, "nobussy");
             panel8.Location = new Point(0,0);
             textBox13.Text = "";
             textBox8.Visible = false;
@@ -304,27 +287,31 @@ namespace Client
             while(true)
             {
                 m = "";
-                m = GetMessage(Stream);
+                m = MessageTransmission.GetMessage(Stream);
                 if (m.StartsWith("PLAY:"))
                 {
+                    connected = true;
                     string[] info = m.Split(':');
                     textBox13.Text = "Do you want to PLAY with: " + info[1] + Environment.NewLine;
                 }
-                else if(m.StartsWith("You "))
+                else if (m.StartsWith("You "))
                 {
                     textBox13.Text += m;
                     button28.Visible = true;
                     button22.Visible = true;
                     button24.Visible = true;
                     button25.Visible = true;
+                    connected = false;
                 }
-                else if (m.StartsWith("There ") || m.StartsWith("The oppo"))
+                else if (m.StartsWith("There ") || m.StartsWith("The oppo") || m.StartsWith("Opponent left"))
                 {
-                    textBox13.Text += m;
+                    if(m.StartsWith("Opponent left") && connected) textBox13.Text += m;
+                    else textBox13.Text += m;
                     button28.Visible = true;
                     button22.Visible = true;
                     button24.Visible = true;
                     button25.Visible = true;
+                    connected = false;
                 }
                 else if (m.StartsWith("STAT"))
                 {
@@ -332,19 +319,29 @@ namespace Client
                     DialogResult dialogResult = MessageBox.Show(m, UserLogin, MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        SendMessage(Stream, "y");
+                        MessageTransmission.SendMessage(Stream, "y");
+                        connected = true;
+                        button22.Visible = false;
+                        button25.Visible = false;
+                        button24.Visible = false;
+                        button28.Visible = false;
                         textBox3.Text = "";
                     }
                     else if (dialogResult == DialogResult.No)
                     {
-                        SendMessage(Stream, "n");
+                        MessageTransmission.SendMessage(Stream, "n");
                         button28.Visible = true;
                         button22.Visible = true;
                         button24.Visible = true;
                         button25.Visible = true;
+                        connected = false;
                     }
                 }
-                else if (m == "q") return;
+                else if (m == "q")
+                {
+                    connected = false;
+                    return;
+                }
                 else textBox13.Text += m;
             }
         }
@@ -352,14 +349,14 @@ namespace Client
         //Communicator
         private void button14_Click(object sender, EventArgs e)
         {
-            SendMessage(Stream, "nobussy");
-            SendMessage(Stream, "freeusers");
+            MessageTransmission.SendMessage(Stream, "nobussy");
+            MessageTransmission.SendMessage(Stream, "freeusers");
             panel7.Location = new Point(0, 0);
             textBox11.Text = "";
             textBox8.Visible = false;
             panel7.Visible = true;
 
-            string m = GetMessage(Stream);
+            string m = MessageTransmission.GetMessage(Stream);
 
             if (m != "noother")
             {
@@ -383,7 +380,7 @@ namespace Client
             while (true)
             {
                 m = "";
-                m = GetMessage(Stream);
+                m = MessageTransmission.GetMessage(Stream);
 
                 if (m == "BEGAN")
                 {
@@ -435,8 +432,8 @@ namespace Client
 
             if (password != "")
             {
-                SendMessage(Stream, "5");
-                SendMessage(Stream, password);
+                MessageTransmission.SendMessage(Stream, "5");
+                MessageTransmission.SendMessage(Stream, password);
             }
             else if (password == "")
             {
@@ -446,7 +443,7 @@ namespace Client
                 return;
             }
 
-            string m = GetMessage(Stream);
+            string m = MessageTransmission.GetMessage(Stream);
 
             if (m == "success")
             {
@@ -473,10 +470,10 @@ namespace Client
 
         private void button21_Click(object sender, EventArgs e)
         {
-            SendMessage(Stream, "q");
+            MessageTransmission.SendMessage(Stream, "q");
 
-            if (connected==false) SendMessage(Stream, "0");
-            else SendMessage(Stream, "exit");
+            if (connected==false) MessageTransmission.SendMessage(Stream, "0");
+            else MessageTransmission.SendMessage(Stream, "exit");
             panel7.Visible = false;
             connected = false;
         }
@@ -486,8 +483,8 @@ namespace Client
             string choose = comboBox1.Text;
             string index = (comboBox1.SelectedIndex+1).ToString();
 
-            SendMessage(Stream, "3");
-            SendMessage(Stream, index);
+            MessageTransmission.SendMessage(Stream, "3");
+            MessageTransmission.SendMessage(Stream, index);
 
             if (choose!="")
             {
@@ -502,7 +499,7 @@ namespace Client
             {
                 if(send)
                 {
-                    SendMessage(Stream, textBox10.Text);
+                    MessageTransmission.SendMessage(Stream, textBox10.Text);
                     textBox10.Text = "";
                     send = false;
                 }
@@ -526,13 +523,14 @@ namespace Client
 
         private void button22_Click(object sender, EventArgs e)
         {
+            connected = true;
             textBox13.Text = "";
             button28.Visible = false;
             button22.Visible = false;
             button24.Visible = false;
             button25.Visible = false;
 
-            SendMessage(Stream, "1");
+            MessageTransmission.SendMessage(Stream, "1");
         }
 
 
@@ -543,44 +541,52 @@ namespace Client
 
         private void button24_Click(object sender, EventArgs e)
         {
-            SendMessage(Stream, "y");
+            if(connected)
+            {
+                button22.Visible = false;
+                button25.Visible = false;
+                button24.Visible = false;
+                button28.Visible = false;
+            }
+            MessageTransmission.SendMessage(Stream, "y");
         }
 
         private void button25_Click(object sender, EventArgs e)
         {
             textBox13.Text = "";
-            SendMessage(Stream, "n");
+            MessageTransmission.SendMessage(Stream, "n");
         }
 
         private void button23_Click(object sender, EventArgs e)
         {
-            SendMessage(Stream, "r");
+            MessageTransmission.SendMessage(Stream, "r");
         }
 
         private void button26_Click(object sender, EventArgs e)
         {
-            SendMessage(Stream, "s");
+            MessageTransmission.SendMessage(Stream, "s");
         }
 
         private void button27_Click(object sender, EventArgs e)
         {
-            SendMessage(Stream, "p");
+            MessageTransmission.SendMessage(Stream, "p");
         }
 
         private void button28_Click(object sender, EventArgs e)
         {
             panel8.Visible = false;
-            SendMessage(Stream, "q");
+            MessageTransmission.SendMessage(Stream, "q");
         }
 
         private void button30_Click(object sender, EventArgs e)
         {
-            SendMessage(Stream, "yc");
+            MessageTransmission.SendMessage(Stream, "yc");
         }
 
         private void button29_Click(object sender, EventArgs e)
         {
-            SendMessage(Stream, "n");
+            connected = false;
+            MessageTransmission.SendMessage(Stream, "n");
         }
 
         private void button20_Click_1(object sender, EventArgs e)

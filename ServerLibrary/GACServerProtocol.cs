@@ -584,6 +584,7 @@ namespace ServerLibrary
                                         MessageTransmission.SendMessage(Stream, "Opponent left the game." + Environment.NewLine);
                                     }
                                 }
+                                else activeGames[gameIndex].opponentAnswere = "n";
 
                                 busyUsers.Remove(u);
                                 Thread.Sleep(300);
@@ -592,6 +593,7 @@ namespace ServerLibrary
                         catch(Exception)
                         {
                             MessageTransmission.SendMessage(Stream, "Opponent left the game." + Environment.NewLine);
+                            busyUsers.Remove(u);
                         }
                         break;
                     case "yc":

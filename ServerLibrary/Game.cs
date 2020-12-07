@@ -269,6 +269,7 @@ namespace ServerLibrary
                         MessageTransmission.SendMessage(c1, "STATYou draw the match! " + PlayerPoints + ":" + OpponentPoints
                             + Environment.NewLine + "Your current ELO: " + sql.GetELO(Host) + Environment.NewLine + "Do you want to play again?");
                     }
+                    opponentAnswere = "";
 
                     string a1 = MessageTransmission.GetMessage(c1);
 
@@ -278,7 +279,7 @@ namespace ServerLibrary
                         OpponentPoints = 0;
                         hostAnswere = "y";
                         MessageTransmission.SendMessage(c1, "Waiting for opponent..." + Environment.NewLine);
-                        opponentAnswere = "";
+                        
                         s = 0;
                         while (s < 100)
                         {
@@ -286,6 +287,7 @@ namespace ServerLibrary
                             s++;
                             if (s == 100 || opponentAnswere != "") break;
                         }
+                        Console.WriteLine(opponentAnswere);
                         if (opponentAnswere == "y" && s < 100)
                         {
                             MessageTransmission.SendMessage(c1, "Opponent is ready to play." + Environment.NewLine);

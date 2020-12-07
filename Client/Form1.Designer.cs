@@ -34,9 +34,8 @@
             this.button3 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.button18 = new System.Windows.Forms.Button();
-            this.panel8 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.button20 = new System.Windows.Forms.Button();
             this.button29 = new System.Windows.Forms.Button();
             this.button30 = new System.Windows.Forms.Button();
             this.button21 = new System.Windows.Forms.Button();
@@ -45,6 +44,8 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
+            this.button18 = new System.Windows.Forms.Button();
+            this.panel8 = new System.Windows.Forms.Panel();
             this.button28 = new System.Windows.Forms.Button();
             this.button27 = new System.Windows.Forms.Button();
             this.button26 = new System.Windows.Forms.Button();
@@ -102,11 +103,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.button20 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel6.SuspendLayout();
-            this.panel8.SuspendLayout();
             this.panel7.SuspendLayout();
+            this.panel8.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -194,38 +194,6 @@
             this.panel6.Visible = false;
             this.panel6.Paint += new System.Windows.Forms.PaintEventHandler(this.panel6_Paint_1);
             // 
-            // button18
-            // 
-            this.button18.BackColor = System.Drawing.Color.White;
-            this.button18.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button18.FlatAppearance.BorderSize = 0;
-            this.button18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button18.Location = new System.Drawing.Point(25, 189);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(139, 23);
-            this.button18.TabIndex = 28;
-            this.button18.Text = "CHANGE PASSWORD";
-            this.button18.UseVisualStyleBackColor = false;
-            this.button18.Visible = false;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
-            // 
-            // panel8
-            // 
-            this.panel8.Controls.Add(this.button28);
-            this.panel8.Controls.Add(this.button27);
-            this.panel8.Controls.Add(this.button26);
-            this.panel8.Controls.Add(this.button23);
-            this.panel8.Controls.Add(this.button25);
-            this.panel8.Controls.Add(this.button24);
-            this.panel8.Controls.Add(this.button22);
-            this.panel8.Controls.Add(this.textBox13);
-            this.panel8.Controls.Add(this.label23);
-            this.panel8.Location = new System.Drawing.Point(305, 178);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(776, 436);
-            this.panel8.TabIndex = 31;
-            this.panel8.Visible = false;
-            // 
             // panel7
             // 
             this.panel7.Controls.Add(this.button20);
@@ -242,6 +210,20 @@
             this.panel7.Size = new System.Drawing.Size(776, 436);
             this.panel7.TabIndex = 30;
             this.panel7.Visible = false;
+            // 
+            // button20
+            // 
+            this.button20.BackColor = System.Drawing.Color.White;
+            this.button20.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button20.FlatAppearance.BorderSize = 0;
+            this.button20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button20.Location = new System.Drawing.Point(358, 369);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(135, 23);
+            this.button20.TabIndex = 37;
+            this.button20.Text = "SEND";
+            this.button20.UseVisualStyleBackColor = false;
+            this.button20.Click += new System.EventHandler(this.button20_Click_1);
             // 
             // button29
             // 
@@ -335,6 +317,38 @@
             this.label25.Size = new System.Drawing.Size(304, 39);
             this.label25.TabIndex = 18;
             this.label25.Text = "COMMUNICATOR";
+            // 
+            // button18
+            // 
+            this.button18.BackColor = System.Drawing.Color.White;
+            this.button18.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button18.FlatAppearance.BorderSize = 0;
+            this.button18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button18.Location = new System.Drawing.Point(25, 189);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(139, 23);
+            this.button18.TabIndex = 28;
+            this.button18.Text = "CHANGE PASSWORD";
+            this.button18.UseVisualStyleBackColor = false;
+            this.button18.Visible = false;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // panel8
+            // 
+            this.panel8.Controls.Add(this.button28);
+            this.panel8.Controls.Add(this.button27);
+            this.panel8.Controls.Add(this.button26);
+            this.panel8.Controls.Add(this.button23);
+            this.panel8.Controls.Add(this.button25);
+            this.panel8.Controls.Add(this.button24);
+            this.panel8.Controls.Add(this.button22);
+            this.panel8.Controls.Add(this.textBox13);
+            this.panel8.Controls.Add(this.label23);
+            this.panel8.Location = new System.Drawing.Point(305, 178);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(776, 436);
+            this.panel8.TabIndex = 31;
+            this.panel8.Visible = false;
             // 
             // button28
             // 
@@ -1026,20 +1040,6 @@
             this.label1.Visible = false;
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // button20
-            // 
-            this.button20.BackColor = System.Drawing.Color.White;
-            this.button20.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button20.FlatAppearance.BorderSize = 0;
-            this.button20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button20.Location = new System.Drawing.Point(358, 369);
-            this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(135, 23);
-            this.button20.TabIndex = 37;
-            this.button20.Text = "SEND";
-            this.button20.UseVisualStyleBackColor = false;
-            this.button20.Click += new System.EventHandler(this.button20_Click_1);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1055,10 +1055,10 @@
             this.panel1.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
-            this.panel8.ResumeLayout(false);
-            this.panel8.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel3.ResumeLayout(false);
