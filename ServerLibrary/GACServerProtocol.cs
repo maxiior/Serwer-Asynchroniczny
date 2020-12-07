@@ -609,9 +609,10 @@ namespace ServerLibrary
                             busyUsers.Add(u);
 
                             string m = "";
-                            while (activeConversation[conversationIndex].connected && activeConversation[conversationIndex].Interlocutor == u.Login)
+
+                            try
                             {
-                                try
+                                while (activeConversation[conversationIndex].connected && activeConversation[conversationIndex].Interlocutor == u.Login)
                                 {
                                     if (activeConversation[conversationIndex].connected && activeConversation[conversationIndex].Interlocutor == u.Login)
                                         m = MessageTransmission.GetMessage(Stream);
@@ -639,16 +640,17 @@ namespace ServerLibrary
                                         sql.AddMessageToDB(u.Login, activeConversation[conversationIndex].Host, m, now.ToString("yyyy-MM-dd hh:mm"));
                                     }
                                 }
-                                catch (Exception e)
-                                {
-                                    //MessageTransmission.SendMessage(Stream, "The interlocutor ended the conversation." + Environment.NewLine);
-                                    MessageTransmission.SendMessage(Stream, "quits");
-                                    break;
-                                }
+                                if (!activeConversation[conversationIndex].connected) activeConversation.Remove(activeConversation[conversationIndex]);
+                                //MessageTransmission.SendMessage(Stream, Environment.NewLine);
+                                busyUsers.Remove(u);
                             }
-                            if (!activeConversation[conversationIndex].connected) activeConversation.Remove(activeConversation[conversationIndex]);
-                            //MessageTransmission.SendMessage(Stream, Environment.NewLine);
-                            busyUsers.Remove(u);
+                            catch (Exception e)
+                            {
+                                //MessageTransmission.SendMessage(Stream, "The interlocutor ended the conversation." + Environment.NewLine);
+                                busyUsers.Remove(u);
+                                MessageTransmission.SendMessage(Stream, "quits");
+                                break;
+                            }
                         }
                         break;
                     case "n":

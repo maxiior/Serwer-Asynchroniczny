@@ -114,7 +114,7 @@ namespace ServerLibrary
                 //MessageTransmission.SendMessage(c1, Environment.NewLine);
                 //MessageTransmission.SendMessage(c1, "Waiting for " + Interlocutor + "..." + Environment.NewLine);
 
-                MessageTransmission.SendMessage(c2, "Do you want to SPEAK with: " + player + "? [yes/no]" + Environment.NewLine);
+                MessageTransmission.SendMessage(c2, "TALKKDo you want to TALK with: " + player + "? [YES/NO]" + Environment.NewLine);
 
                 int s = 0;
 
@@ -149,6 +149,7 @@ namespace ServerLibrary
                         {
                             //MessageTransmission.SendMessage(c1, "You have finished the conversation." + Environment.NewLine);
                             MessageTransmission.SendMessage(c1, "finish");
+                            MessageTransmission.SendMessage(c2, "quits");
                             connected = false;
                             break;
                         }

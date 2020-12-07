@@ -12,6 +12,7 @@ namespace Client
         TcpClient Client;
         NetworkStream Stream;
 
+        private DateTime now = DateTime.Now;
         private string UserLogin;
         private bool connected = false;
         private bool send = false;
@@ -292,7 +293,7 @@ namespace Client
                 {
                     connected = true;
                     string[] info = m.Split(':');
-                    textBox13.Text = "Do you want to PLAY with: " + info[1] + Environment.NewLine;
+                    textBox13.Text = "Do you want to PLAY with: " + info[1] + "? [YES/NO]" + Environment.NewLine;
                 }
                 else if (m.StartsWith("You "))
                 {
@@ -325,7 +326,7 @@ namespace Client
                         button25.Visible = false;
                         button24.Visible = false;
                         button28.Visible = false;
-                        textBox3.Text = "";
+                        textBox13.Text = "";
                     }
                     else if (dialogResult == DialogResult.No)
                     {
@@ -384,6 +385,7 @@ namespace Client
 
                 if (m == "BEGAN")
                 {
+                    connected = true;
                     textBox11.Text += "The conversation began..." + Environment.NewLine;
 
                     Thread t4 = new Thread(() => SendMessages());
@@ -401,7 +403,14 @@ namespace Client
                 }
                 else if(m == "finish")
                 {
+                    textBox10.Text = "";
+                    connected = false;
                     textBox11.Text += "You have finished the conversation." + Environment.NewLine;
+                }
+                else if(m.StartsWith("TALKK"))
+                {
+                    textBox11.Text = "";
+                    textBox11.Text += m.Replace("TALKK","");
                 }
                 else if (m == "q") return;
                 else textBox11.Text += m;
@@ -495,11 +504,13 @@ namespace Client
         //To trzeba jakoś wyłączać
         private void SendMessages()
         {
-            while(true)
+            while(connected)
             {
                 if(send)
                 {
                     MessageTransmission.SendMessage(Stream, textBox10.Text);
+                    if(textBox10.Text!="exit") textBox11.Text +=  textBox10.Text + " [" +UserLogin + "]" + " [" + now.ToString("yyyy-MM-dd hh:mm") + "]" + Environment.NewLine;
+                    else return;
                     textBox10.Text = "";
                     send = false;
                 }
