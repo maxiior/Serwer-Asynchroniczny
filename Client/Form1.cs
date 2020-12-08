@@ -671,5 +671,10 @@ namespace Client
         {
             MessageTransmission.SendMessage(Stream, "freeusers");
         }
+
+        private void panel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
