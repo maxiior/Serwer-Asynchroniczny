@@ -440,7 +440,7 @@ namespace ServerLibrary
                         string messages = "";
 
                         for (int i = 0; i < data.Count(); i++)
-                            messages += data[i].sender + " " + "[" + data[i].date + "]" + " " + data[i].message + Environment.NewLine;
+                            messages += data[i].message + " [" + data[i].sender + "] " + "[" + data[i].date + "]" + Environment.NewLine;
 
                         return messages;
                     }

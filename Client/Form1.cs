@@ -359,10 +359,12 @@ namespace Client
 
             string m = MessageTransmission.GetMessage(Stream);
 
+            comboBox1.Items.Clear();
+
             if (m != "noother")
             {
                 m = m.Replace("LOGINS", "");
-                comboBox1.Items.Clear();
+                
                 string[] logins = m.Split(':');
 
                 for (int i = 0; i < logins.Length; i++)
@@ -437,10 +439,9 @@ namespace Client
                 else if (m.StartsWith("LOGINS"))
                 {
                     m = m.Replace("LOGINS", "");
-
-                    if(m!="")
+                    comboBox1.Items.Clear();
+                    if (m!="")
                     {
-                        comboBox1.Items.Clear();
                         string[] logins = m.Split(':');
 
                         for (int i = 0; i < logins.Length; i++)
