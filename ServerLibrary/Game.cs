@@ -95,6 +95,7 @@ namespace ServerLibrary
                 {
                 playagian:
                     OpponentChoice.Clear();
+                    PlayerChoice.Clear();
                     Choose(c1);
                     while (this.OpponentChoice.Count < 1 && connected) ;
                     if(!connected)
