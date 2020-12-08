@@ -239,6 +239,7 @@ namespace ServerLibrary
                 if (i != users.Count - 1) logins += users[i].Login + ":";
                 else logins += users[i].Login;
             }
+            logins = "LOGINS" + logins;
             if(logins!="") MessageTransmission.SendMessage(s, logins);
             else MessageTransmission.SendMessage(s, "noother");
         }
@@ -629,6 +630,7 @@ namespace ServerLibrary
                                     if (m == "exit")
                                     {
                                         MessageTransmission.SendMessage(Stream, "finish");
+                                        MessageTransmission.SendMessage(activeConversation[conversationIndex].c1, "quits");
                                         //MessageTransmission.SendMessage(Stream, "You have finished the conversation." + Environment.NewLine);
                                         activeConversation[conversationIndex].connected = false;
                                         break;
@@ -664,7 +666,7 @@ namespace ServerLibrary
                         conversationIndex = -1;
                         for (int i = 0; i < activeConversation.Count; i++)
                         {
-                            if (activeConversation[i].Interlocutor == u.Login) gameIndex = i;
+                            if (activeConversation[i].Interlocutor == u.Login) conversationIndex = i;
                         }
                         if (conversationIndex != -1) activeConversation[conversationIndex].interlocutorAnswere = "n";
                         break;

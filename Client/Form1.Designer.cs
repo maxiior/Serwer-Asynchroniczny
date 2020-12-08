@@ -103,6 +103,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.button31 = new System.Windows.Forms.Button();
+            this.button32 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
@@ -196,6 +198,8 @@
             // 
             // panel7
             // 
+            this.panel7.Controls.Add(this.button32);
+            this.panel7.Controls.Add(this.button31);
             this.panel7.Controls.Add(this.button20);
             this.panel7.Controls.Add(this.button29);
             this.panel7.Controls.Add(this.button30);
@@ -217,7 +221,7 @@
             this.button20.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button20.FlatAppearance.BorderSize = 0;
             this.button20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button20.Location = new System.Drawing.Point(358, 369);
+            this.button20.Location = new System.Drawing.Point(228, 347);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(135, 23);
             this.button20.TabIndex = 37;
@@ -231,7 +235,7 @@
             this.button29.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button29.FlatAppearance.BorderSize = 0;
             this.button29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button29.Location = new System.Drawing.Point(178, 190);
+            this.button29.Location = new System.Drawing.Point(117, 193);
             this.button29.Name = "button29";
             this.button29.Size = new System.Drawing.Size(62, 42);
             this.button29.TabIndex = 36;
@@ -245,7 +249,7 @@
             this.button30.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button30.FlatAppearance.BorderSize = 0;
             this.button30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button30.Location = new System.Drawing.Point(105, 190);
+            this.button30.Location = new System.Drawing.Point(44, 193);
             this.button30.Name = "button30";
             this.button30.Size = new System.Drawing.Size(62, 42);
             this.button30.TabIndex = 35;
@@ -259,7 +263,7 @@
             this.button21.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button21.FlatAppearance.BorderSize = 0;
             this.button21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button21.Location = new System.Drawing.Point(105, 238);
+            this.button21.Location = new System.Drawing.Point(44, 241);
             this.button21.Name = "button21";
             this.button21.Size = new System.Drawing.Size(135, 23);
             this.button21.TabIndex = 32;
@@ -269,7 +273,7 @@
             // 
             // textBox10
             // 
-            this.textBox10.Location = new System.Drawing.Point(358, 343);
+            this.textBox10.Location = new System.Drawing.Point(228, 321);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(310, 20);
             this.textBox10.TabIndex = 30;
@@ -281,7 +285,7 @@
             this.button19.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button19.FlatAppearance.BorderSize = 0;
             this.button19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button19.Location = new System.Drawing.Point(105, 161);
+            this.button19.Location = new System.Drawing.Point(44, 164);
             this.button19.Name = "button19";
             this.button19.Size = new System.Drawing.Size(135, 23);
             this.button19.TabIndex = 29;
@@ -292,7 +296,7 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(105, 128);
+            this.comboBox1.Location = new System.Drawing.Point(44, 137);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(135, 21);
             this.comboBox1.TabIndex = 26;
@@ -300,7 +304,7 @@
             // 
             // textBox11
             // 
-            this.textBox11.Location = new System.Drawing.Point(358, 107);
+            this.textBox11.Location = new System.Drawing.Point(228, 85);
             this.textBox11.Multiline = true;
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(310, 218);
@@ -1040,6 +1044,34 @@
             this.label1.Visible = false;
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
+            // button31
+            // 
+            this.button31.BackColor = System.Drawing.Color.White;
+            this.button31.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button31.FlatAppearance.BorderSize = 0;
+            this.button31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button31.Location = new System.Drawing.Point(403, 347);
+            this.button31.Name = "button31";
+            this.button31.Size = new System.Drawing.Size(135, 23);
+            this.button31.TabIndex = 38;
+            this.button31.Text = "EXIT";
+            this.button31.UseVisualStyleBackColor = false;
+            this.button31.Click += new System.EventHandler(this.button31_Click);
+            // 
+            // button32
+            // 
+            this.button32.BackColor = System.Drawing.Color.White;
+            this.button32.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button32.FlatAppearance.BorderSize = 0;
+            this.button32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button32.Location = new System.Drawing.Point(44, 109);
+            this.button32.Name = "button32";
+            this.button32.Size = new System.Drawing.Size(135, 23);
+            this.button32.TabIndex = 39;
+            this.button32.Text = "REFRESH LIST";
+            this.button32.UseVisualStyleBackColor = false;
+            this.button32.Click += new System.EventHandler(this.button32_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1148,6 +1180,8 @@
         private System.Windows.Forms.Button button29;
         private System.Windows.Forms.Button button30;
         private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.Button button31;
+        private System.Windows.Forms.Button button32;
     }
 }
 

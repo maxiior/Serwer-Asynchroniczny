@@ -361,6 +361,7 @@ namespace Client
 
             if (m != "noother")
             {
+                m = m.Replace("LOGINS", "");
                 comboBox1.Items.Clear();
                 string[] logins = m.Split(':');
 
@@ -385,35 +386,71 @@ namespace Client
 
                 if (m == "BEGAN")
                 {
+                    textBox11.Text = "";
                     connected = true;
                     textBox11.Text += "The conversation began..." + Environment.NewLine;
 
                     Thread t4 = new Thread(() => SendMessages());
                     t4.Start();
                 }
-                else if (m == "quits")
+                else if (m == "quits" && connected == true)
                 {
                     connected = false;
+                    button21.Visible = true;
+                    button29.Visible = true;
+                    button30.Visible = true;
+                    button19.Visible = true;
+                    button32.Visible = true;
+                    comboBox1.Visible = true;
+                    MessageTransmission.SendMessage(Stream, "sth");
                     textBox11.Text += "The interlocutor quits the conversation. Try to connect again." + Environment.NewLine;
                 }
                 else if (m == "noother")
                 {
+                    button21.Visible = true;
+                    button29.Visible = true;
+                    button30.Visible = true;
+                    button32.Visible = true;
+                    comboBox1.Visible = true;
+                    button19.Visible = true;
                     textBox11.Text = "";
                     textBox11.Text += "There are no other players at the moment." + Environment.NewLine;
                 }
                 else if(m == "finish")
                 {
+                    button21.Visible = true;
+                    button29.Visible = true;
+                    button32.Visible = true;
+                    button30.Visible = true;
+                    comboBox1.Visible = true;
+                    button19.Visible = true;
                     textBox10.Text = "";
                     connected = false;
                     textBox11.Text += "You have finished the conversation." + Environment.NewLine;
                 }
                 else if(m.StartsWith("TALKK"))
                 {
+                    connected = true;
                     textBox11.Text = "";
                     textBox11.Text += m.Replace("TALKK","");
                 }
+                else if (m.StartsWith("LOGINS"))
+                {
+                    m = m.Replace("LOGINS", "");
+
+                    if(m!="")
+                    {
+                        comboBox1.Items.Clear();
+                        string[] logins = m.Split(':');
+
+                        for (int i = 0; i < logins.Length; i++)
+                        {
+                            comboBox1.Items.Add(logins[i]);
+                        }
+                    }
+                }
                 else if (m == "q") return;
-                else textBox11.Text += m;
+                else if (m != "quits") textBox11.Text += m;
             }
         }
 
@@ -481,29 +518,38 @@ namespace Client
         {
             MessageTransmission.SendMessage(Stream, "q");
 
-            if (connected==false) MessageTransmission.SendMessage(Stream, "0");
-            else MessageTransmission.SendMessage(Stream, "exit");
             panel7.Visible = false;
             connected = false;
         }
 
         private void button19_Click(object sender, EventArgs e)
         {
+            connected = true;
             string choose = comboBox1.Text;
             string index = (comboBox1.SelectedIndex+1).ToString();
+
+            if (comboBox1.Items.Count > 0 && index == "0")
+                index = "1";
+
+            button21.Visible = false;
+            button29.Visible = false;
+            button30.Visible = false;
+            button19.Visible = false;
+            button32.Visible = false;
+            comboBox1.Visible = false;
 
             MessageTransmission.SendMessage(Stream, "3");
             MessageTransmission.SendMessage(Stream, index);
 
             if (choose!="")
             {
-                connected = true;
                 textBox11.Text = "Waiting for " + choose + "..." + Environment.NewLine;
             }
         }
-        //To trzeba jakoś wyłączać
+        
         private void SendMessages()
         {
+            send = false;
             while(connected)
             {
                 if(send)
@@ -592,10 +638,20 @@ namespace Client
         private void button30_Click(object sender, EventArgs e)
         {
             MessageTransmission.SendMessage(Stream, "yc");
+            if(connected)
+            {
+                button21.Visible = false;
+                button29.Visible = false;
+                button32.Visible = false;
+                button30.Visible = false;
+                button19.Visible = false;
+                comboBox1.Visible = false;
+            }
         }
 
         private void button29_Click(object sender, EventArgs e)
         {
+            if (connected == true) textBox11.Text = "";
             connected = false;
             MessageTransmission.SendMessage(Stream, "n");
         }
@@ -603,6 +659,16 @@ namespace Client
         private void button20_Click_1(object sender, EventArgs e)
         {
             send = true;
+        }
+
+        private void button31_Click(object sender, EventArgs e)
+        {
+            if (connected == true) MessageTransmission.SendMessage(Stream, "exit");
+        }
+
+        private void button32_Click(object sender, EventArgs e)
+        {
+            MessageTransmission.SendMessage(Stream, "freeusers");
         }
     }
 }
