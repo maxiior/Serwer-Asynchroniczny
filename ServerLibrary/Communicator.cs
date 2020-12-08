@@ -7,6 +7,7 @@ namespace ServerLibrary
 {
     class Communicator
     {
+        Sqlite sql;
         private DateTime now = DateTime.Now;
         private string interlocutor = "";
         private string host = "";
@@ -133,6 +134,26 @@ namespace ServerLibrary
                     //MessageTransmission.SendMessage(c2, "The conversation began:" + Environment.NewLine);
                     MessageTransmission.SendMessage(c1, "BEGAN");
                     MessageTransmission.SendMessage(c2, "BEGAN");
+
+                    string history = sql.ReadMessagesHistoryDB(player, Interlocutor);
+                    string tmp = "";
+                    bool done = false;
+                    for(int i=0; i<history.Length; i++)
+                    {
+                        tmp = "";
+                        for(int j=0; j<100; j++)
+                        {
+                            tmp += history[i * 100 + j];
+                            if (1 + j + 100 * i == history.Length)
+                            {
+                                done = true;
+                                break;
+                            }
+                        }
+                        MessageTransmission.SendMessage(c1, tmp);
+                        MessageTransmission.SendMessage(c2, tmp);
+                        if (done) break;
+                    }
 
                     string m="";
 

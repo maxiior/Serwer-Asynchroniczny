@@ -35,6 +35,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.button32 = new System.Windows.Forms.Button();
+            this.button31 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
             this.button29 = new System.Windows.Forms.Button();
             this.button30 = new System.Windows.Forms.Button();
@@ -103,8 +105,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.button31 = new System.Windows.Forms.Button();
-            this.button32 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel7.SuspendLayout();
@@ -215,6 +215,34 @@
             this.panel7.TabIndex = 30;
             this.panel7.Visible = false;
             // 
+            // button32
+            // 
+            this.button32.BackColor = System.Drawing.Color.White;
+            this.button32.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button32.FlatAppearance.BorderSize = 0;
+            this.button32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button32.Location = new System.Drawing.Point(44, 109);
+            this.button32.Name = "button32";
+            this.button32.Size = new System.Drawing.Size(135, 23);
+            this.button32.TabIndex = 39;
+            this.button32.Text = "REFRESH LIST";
+            this.button32.UseVisualStyleBackColor = false;
+            this.button32.Click += new System.EventHandler(this.button32_Click);
+            // 
+            // button31
+            // 
+            this.button31.BackColor = System.Drawing.Color.White;
+            this.button31.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button31.FlatAppearance.BorderSize = 0;
+            this.button31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button31.Location = new System.Drawing.Point(403, 347);
+            this.button31.Name = "button31";
+            this.button31.Size = new System.Drawing.Size(135, 23);
+            this.button31.TabIndex = 38;
+            this.button31.Text = "EXIT";
+            this.button31.UseVisualStyleBackColor = false;
+            this.button31.Click += new System.EventHandler(this.button31_Click);
+            // 
             // button20
             // 
             this.button20.BackColor = System.Drawing.Color.White;
@@ -307,6 +335,7 @@
             this.textBox11.Location = new System.Drawing.Point(228, 85);
             this.textBox11.Multiline = true;
             this.textBox11.Name = "textBox11";
+            this.textBox11.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox11.Size = new System.Drawing.Size(310, 218);
             this.textBox11.TabIndex = 25;
             this.textBox11.TextChanged += new System.EventHandler(this.textBox11_TextChanged);
@@ -1043,34 +1072,6 @@
             this.label1.Text = "label1";
             this.label1.Visible = false;
             this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // button31
-            // 
-            this.button31.BackColor = System.Drawing.Color.White;
-            this.button31.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button31.FlatAppearance.BorderSize = 0;
-            this.button31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button31.Location = new System.Drawing.Point(403, 347);
-            this.button31.Name = "button31";
-            this.button31.Size = new System.Drawing.Size(135, 23);
-            this.button31.TabIndex = 38;
-            this.button31.Text = "EXIT";
-            this.button31.UseVisualStyleBackColor = false;
-            this.button31.Click += new System.EventHandler(this.button31_Click);
-            // 
-            // button32
-            // 
-            this.button32.BackColor = System.Drawing.Color.White;
-            this.button32.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button32.FlatAppearance.BorderSize = 0;
-            this.button32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button32.Location = new System.Drawing.Point(44, 109);
-            this.button32.Name = "button32";
-            this.button32.Size = new System.Drawing.Size(135, 23);
-            this.button32.TabIndex = 39;
-            this.button32.Text = "REFRESH LIST";
-            this.button32.UseVisualStyleBackColor = false;
-            this.button32.Click += new System.EventHandler(this.button32_Click);
             // 
             // Form1
             // 

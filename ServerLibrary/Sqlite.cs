@@ -123,6 +123,7 @@ namespace ServerLibrary
             using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
             {
                 DbConn.Execute($"DELETE FROM Users WHERE login='{u.Login}';");
+                DbConn.Execute($"DELETE FROM Messages WHERE converId=1 OR converId=3;");
             }
         }
         /// <summary>

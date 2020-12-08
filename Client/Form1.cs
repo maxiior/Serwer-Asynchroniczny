@@ -403,7 +403,7 @@ namespace Client
                     button32.Visible = true;
                     comboBox1.Visible = true;
                     MessageTransmission.SendMessage(Stream, "sth");
-                    textBox11.Text += "The interlocutor quits the conversation. Try to connect again." + Environment.NewLine;
+                    textBox11.AppendText("The interlocutor quits the conversation. Try to connect again." + Environment.NewLine);
                 }
                 else if (m == "noother")
                 {
@@ -426,7 +426,7 @@ namespace Client
                     button19.Visible = true;
                     textBox10.Text = "";
                     connected = false;
-                    textBox11.Text += "You have finished the conversation." + Environment.NewLine;
+                    textBox11.AppendText("You have finished the conversation." + Environment.NewLine);
                 }
                 else if(m.StartsWith("TALKK"))
                 {
@@ -450,7 +450,7 @@ namespace Client
                     }
                 }
                 else if (m == "q") return;
-                else if (m != "quits") textBox11.Text += m;
+                else if (m != "quits") textBox11.AppendText(m);
             }
         }
 
@@ -555,7 +555,7 @@ namespace Client
                 if(send)
                 {
                     MessageTransmission.SendMessage(Stream, textBox10.Text);
-                    if(textBox10.Text!="exit") textBox11.Text +=  textBox10.Text + " [" +UserLogin + "]" + " [" + now.ToString("yyyy-MM-dd hh:mm") + "]" + Environment.NewLine;
+                    if(textBox10.Text!="exit") textBox11.AppendText(textBox10.Text + " [" +UserLogin + "]" + " [" + now.ToString("yyyy-MM-dd hh:mm") + "]" + Environment.NewLine);
                     else return;
                     textBox10.Text = "";
                     send = false;
