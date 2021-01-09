@@ -35,7 +35,6 @@ namespace ServerLibrary
             TcpClient c = (TcpClient)ar.AsyncState;
             c.Close();
         }
-
         /// <summary>
         /// Menu wyboru opcji użytkownika.
         /// </summary>
@@ -44,7 +43,6 @@ namespace ServerLibrary
         {
             protocol.Run(Stream, client);
         }
-        
         /// <summary>
         /// Rozpoczyna działanie serwera.
         /// </summary>

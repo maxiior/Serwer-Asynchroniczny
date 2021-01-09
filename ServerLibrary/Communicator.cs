@@ -25,7 +25,6 @@ namespace ServerLibrary
             get => host;
             set => host = value;
         }
-
         /// <summary>
         /// Użytkownik wybiera rozmówcę.
         /// </summary>
@@ -50,23 +49,13 @@ namespace ServerLibrary
                         break;
                     }
                 }
-                if (b == false && loggedPlayers[i].Login != player) users.Add(loggedPlayers[i]);
+                if(b == false && loggedPlayers[i].Login != player) users.Add(loggedPlayers[i]);
             }
 
-            if (users.Count == 0) return null;
-
-            //MessageTransmission.SendMessage(s, "Players that you can communicate with:" + Environment.NewLine);
-            //string logins = "";
-            //for (int i=0; i<users.Count; i++)
-            //{
-            //    logins += users[i].Login + " ";
-            //    MessageTransmission.SendMessage(s, (i+1).ToString() + ". " + users[i].Login + "." + Environment.NewLine);
-            //}
-            //MessageTransmission.SendMessage(s, Environment.NewLine);
-            //MessageTransmission.SendMessage(s, "Choose [type '0' to resign]:" + Environment.NewLine);
+            if(users.Count == 0) return null;
 
             int u = Convert.ToInt32(MessageTransmission.GetMessage(s));
-            if (u == 0) return "0";
+            if(u == 0) return "0";
             else return users[u - 1].Login;
         }
         /// <summary>
@@ -112,9 +101,6 @@ namespace ServerLibrary
             if (Interlocutor != null && Interlocutor != "0")
             {
                 NetworkStream c2 = clients[GetClientIndex(Interlocutor, loggedPlayers, clients)];
-                //MessageTransmission.SendMessage(c1, Environment.NewLine);
-                //MessageTransmission.SendMessage(c1, "Waiting for " + Interlocutor + "..." + Environment.NewLine);
-
                 MessageTransmission.SendMessage(c2, "TALKKDo you want to TALK with: " + player + "? [YES/NO]" + Environment.NewLine);
 
                 int s = 0;
@@ -130,18 +116,16 @@ namespace ServerLibrary
                 {
                     sql.AddConversationToDB(player, Interlocutor);
 
-                    //MessageTransmission.SendMessage(c1, "The conversation began:" + Environment.NewLine);
-                    //MessageTransmission.SendMessage(c2, "The conversation began:" + Environment.NewLine);
                     MessageTransmission.SendMessage(c1, "BEGAN");
                     MessageTransmission.SendMessage(c2, "BEGAN");
 
                     string history = sql.ReadMessagesHistoryDB(player, Interlocutor);
                     string tmp = "";
                     bool done = false;
-                    for(int i=0; i<history.Length; i++)
+                    for (int i = 0; i < history.Length; i++)
                     {
                         tmp = "";
-                        for(int j=0; j<100; j++)
+                        for (int j = 0; j < 100; j++)
                         {
                             tmp += history[i * 100 + j];
                             if (1 + j + 100 * i == history.Length)
@@ -155,20 +139,18 @@ namespace ServerLibrary
                         if (done) break;
                     }
 
-                    string m="";
+                    string m = "";
 
                     while (connected)
                     {
                         if (connected) m = MessageTransmission.GetMessage(c1);
                         if (!connected)
                         {
-                            //MessageTransmission.SendMessage(c1, "The interlocutor ended the conversation." + Environment.NewLine);
                             MessageTransmission.SendMessage(c1, "quits");
                             break;
                         }
                         if (m == "exit")
                         {
-                            //MessageTransmission.SendMessage(c1, "You have finished the conversation." + Environment.NewLine);
                             MessageTransmission.SendMessage(c1, "finish");
                             MessageTransmission.SendMessage(c2, "quits");
                             connected = false;
@@ -180,26 +162,15 @@ namespace ServerLibrary
                             sql.AddMessageToDB(player, Interlocutor, m, now.ToString("yyyy-MM-dd hh:mm"));
                         }
                     }
-                    //MessageTransmission.SendMessage(c1, Environment.NewLine);
                 }
                 else
                 {
                     this.Interlocutor = "";
-                    //MessageTransmission.SendMessage(c1, "The interlocutor quits the conversation. Try to connect again." + Environment.NewLine);
                     MessageTransmission.SendMessage(c1, "quits");
-                    //MessageTransmission.SendMessage(c1, Environment.NewLine);
                 }
             }
-            else if (Interlocutor == null)
-            {
-                //MessageTransmission.SendMessage(c1, "There are no other players at the moment." + Environment.NewLine);
-                MessageTransmission.SendMessage(c1, "noother");
-                //MessageTransmission.SendMessage(c1, Environment.NewLine);
-            }
-            else if (Interlocutor == "0")
-            {
-                //MessageTransmission.SendMessage(c1, Environment.NewLine);
-            }
+            else if (Interlocutor == null) MessageTransmission.SendMessage(c1, "noother");
+            else if (Interlocutor == "0") ;
         }
     }
 }

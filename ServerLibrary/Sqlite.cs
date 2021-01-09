@@ -151,7 +151,6 @@ namespace ServerLibrary
         public void SetNewRanking(string player, string opponent, double result)
         {
             //result - 1 pkt za zwycięstwo, 0.5 za remis i 0 za porażkę
-
             using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
             {
                 var PlayerELO = DbConn.QuerySingleOrDefault($"SELECT Elo FROM Users WHERE login='{player}';");
@@ -161,7 +160,6 @@ namespace ServerLibrary
                 double actualB = OpponentELO.Elo;
 
                 double pkt;
-
                 double We = 1 / (Math.Pow(10, -(actualA - actualB) / 300) + 1);
 
                 pkt = actualA + 30 * (result - We);
@@ -180,9 +178,7 @@ namespace ServerLibrary
         public bool IfAlreadyPlay(string player, List<User> alreadyPlay, string me)
         {
             for (int i = 0; i < alreadyPlay.Count; i++)
-            {
                 if (player == alreadyPlay[i].Login && player != me) return true;
-            }
             return false;
         }
         /// <summary>
@@ -227,7 +223,6 @@ namespace ServerLibrary
                     return p[index];
                 }
                 else return null;
-
             }
         }
         /// <summary>
@@ -256,7 +251,6 @@ namespace ServerLibrary
                     u += Environment.NewLine;
                 }
                 MessageTransmission.SendMessage(s, u);
-
             }
         }
         /// <summary>
@@ -374,7 +368,6 @@ namespace ServerLibrary
             using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
             {
                 var st = DbConn.Query($"SELECT user1, user2 FROM Conversations;", new { ids = new[] { 1, 2 } }).ToList();
-
                 bool check = false;
 
                 for(int i=0; i<st.Count(); i++)
@@ -393,7 +386,6 @@ namespace ServerLibrary
             using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
             {
                 var st = DbConn.Query($"SELECT converId, user1, user2 FROM Conversations;", new { ids = new[] { 1, 2, 3  } }).ToList();
-
                 bool check = false;
                 int id = 0;
                 
@@ -404,10 +396,7 @@ namespace ServerLibrary
                         id = Convert.ToInt32(st[i].converId);
                     }
 
-                if (check)
-                {
-                    DbConn.Execute($"INSERT INTO Messages (converId, date, message, sender) VALUES ('{id}', '{d}', '{m}', '{u1}');");
-                }
+                if (check) DbConn.Execute($"INSERT INTO Messages (converId, date, message, sender) VALUES ('{id}', '{d}', '{m}', '{u1}');");
             }
         }
         /// <summary>
@@ -436,7 +425,6 @@ namespace ServerLibrary
                     if (check)
                     {
                         var data = DbConn.Query($"SELECT date, message, sender FROM Messages WHERE converId={id};", new { ids = new[] { 1, 2, 3 } }).ToList();
-
                         string messages = "";
 
                         for (int i = 0; i < data.Count(); i++)
@@ -465,9 +453,7 @@ namespace ServerLibrary
                 try
                 {
                     var st = DbConn.QuerySingleOrDefault($"SELECT Elo FROM Users WHERE Login='{login}';");
-
                     string r = Convert.ToString(st.Elo);
-
                     return r;
                 }
                 catch (Exception e)

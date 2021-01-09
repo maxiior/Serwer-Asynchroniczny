@@ -16,7 +16,6 @@ namespace Client
         private string UserLogin;
         private bool connected = false;
         private bool send = false;
-        private string messa = "";
 
         public Form1()
         {
@@ -43,10 +42,8 @@ namespace Client
         {
             panel5.Location = new Point(0, 0);
             panel5.Visible = true;
-
             MessageTransmission.SendMessage(Stream, "3");
             string m = MessageTransmission.GetMessage(Stream);
-
             textBox7.Text = m;
         }
 
@@ -251,10 +248,7 @@ namespace Client
                 MessageTransmission.SendMessage(Stream, "4");
                 panel6.Visible = false;
             }
-            else if (dialogResult == DialogResult.No)
-            {
-                
-            }
+            else if (dialogResult == DialogResult.No) ;
         }
 
         private void textBox8_TextChanged(object sender, EventArgs e)
@@ -277,7 +271,6 @@ namespace Client
             textBox13.Text = "";
             textBox8.Visible = false;
             panel8.Visible = true;
-
             Thread tmp1 = new Thread(() => WaitForInviteGame());
             tmp1.Start();
         }
@@ -358,19 +351,15 @@ namespace Client
             panel7.Visible = true;
 
             string m = MessageTransmission.GetMessage(Stream);
-
             comboBox1.Items.Clear();
 
             if (m != "noother")
             {
                 m = m.Replace("LOGINS", "");
-                
                 string[] logins = m.Split(':');
 
                 for (int i = 0; i < logins.Length; i++)
-                {
                     comboBox1.Items.Add(logins[i]);
-                }
             }
             else textBox11.Text += "There are no other players at the moment.";
 
@@ -391,7 +380,6 @@ namespace Client
                     textBox11.Text = "";
                     connected = true;
                     textBox11.Text += "The conversation began..." + Environment.NewLine;
-
                     Thread t4 = new Thread(() => SendMessages());
                     t4.Start();
                 }
@@ -445,9 +433,7 @@ namespace Client
                         string[] logins = m.Split(':');
 
                         for (int i = 0; i < logins.Length; i++)
-                        {
                             comboBox1.Items.Add(logins[i]);
-                        }
                     }
                 }
                 else if (m == "q") return;
@@ -499,10 +485,7 @@ namespace Client
                 textBox9.Visible = false;
                 button18.Visible = false;
             }
-            else if (m == "wrong")
-            {
-                MessageBox.Show("Password should be 5 to 20 characters long. Try again.");
-            }
+            else if (m == "wrong") MessageBox.Show("Password should be 5 to 20 characters long. Try again.");
         }
 
         private void label21_Click(object sender, EventArgs e)
@@ -518,7 +501,6 @@ namespace Client
         private void button21_Click(object sender, EventArgs e)
         {
             MessageTransmission.SendMessage(Stream, "q");
-
             panel7.Visible = false;
             connected = false;
         }
@@ -542,10 +524,7 @@ namespace Client
             MessageTransmission.SendMessage(Stream, "3");
             MessageTransmission.SendMessage(Stream, index);
 
-            if (choose!="")
-            {
-                textBox11.Text = "Waiting for " + choose + "..." + Environment.NewLine;
-            }
+            if (choose!="") textBox11.Text = "Waiting for " + choose + "..." + Environment.NewLine;
         }
         
         private void SendMessages()
@@ -587,7 +566,6 @@ namespace Client
             button22.Visible = false;
             button24.Visible = false;
             button25.Visible = false;
-
             MessageTransmission.SendMessage(Stream, "1");
         }
 
@@ -673,6 +651,11 @@ namespace Client
         }
 
         private void panel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel7_Paint(object sender, PaintEventArgs e)
         {
 
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
@@ -23,7 +22,6 @@ namespace ServerLibrary
             {
                 TcpClient client = TcpListener.AcceptTcpClient();
                 Stream = client.GetStream();
-
                 Task.Run(() => BeginDataTransmission(Stream, client));
             }
         }
@@ -38,7 +36,6 @@ namespace ServerLibrary
             Stream.Close();
             client.Close();
         }
-
         /// <summary>
         /// Rozpoczyna działanie serwera.
         /// </summary>

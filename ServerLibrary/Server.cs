@@ -27,7 +27,6 @@ namespace ServerLibrary
                 else throw new Exception("ERR: nie można zmienić adresu IP, gdy serwer jest aktywny.");
             }
         }
-
         /// <summary>
         /// Zmienna przechowująca port serwera. Nie można jej zmienić w trakcie działania serwera.
         /// </summary>
@@ -48,7 +47,6 @@ namespace ServerLibrary
                 }
             }
         }
-
         /// <summary>
         /// Zmienna przechowująca rozmiar buffera. Nie można jej zmienić w trakcie działania serwera. 
         /// </summary>
@@ -67,7 +65,6 @@ namespace ServerLibrary
         protected TcpListener TcpListener { get => tcpListener; set => tcpListener = value; }
         protected TcpClient TcpClient { get => tcpClient; set => tcpClient = value; }
         protected NetworkStream Stream { get => stream; set => stream = value; }
-
         /// <summary>
         /// Domyślny konstruktor serwera.
         /// </summary>
@@ -85,7 +82,6 @@ namespace ServerLibrary
                 throw new Exception("ERR: błędna wartość portu. Ustawiam port na 8000.");
             }
         }
-
         /// <summary>
         /// Sprawdza, czy port jest poprawny.
         /// </summary>
@@ -95,7 +91,6 @@ namespace ServerLibrary
             if (port < 1024 || port > 49151) return false;
             return true;
         }
-
         /// <summary>
         /// Nasłuchiwanie.
         /// </summary>
@@ -104,17 +99,14 @@ namespace ServerLibrary
             TcpListener = new TcpListener(IPAddress, Port);
             TcpListener.Start();
         }
-
         /// <summary>
         /// Połączenie klienta.
         /// </summary>
         protected abstract void AcceptClient();
-
         /// <summary>
         /// System logowania i przesyłu danych.
         /// </summary>
         protected abstract void BeginDataTransmission(NetworkStream stream, TcpClient client);
-
         /// <summary>
         /// Uruchomienie serwera.
         /// </summary>

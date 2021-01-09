@@ -8,7 +8,6 @@ namespace ServerLibrary
         {
 
         }
-
         public abstract void Run(NetworkStream Stream, TcpClient client);
         public abstract void Close(TcpClient client);
         public abstract string GetName();
