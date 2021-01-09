@@ -7,7 +7,7 @@ namespace ServerLibrary
 {
     class Communicator
     {
-        Sqlite sql;
+        private Sqlite sql;
         private DateTime now = DateTime.Now;
         private string interlocutor = "";
         private string host = "";
