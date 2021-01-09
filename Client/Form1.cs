@@ -266,6 +266,10 @@ namespace Client
         //Game
         private void button12_Click(object sender, EventArgs e)
         {
+            label20.Visible = false;
+            textBox9.Visible = false;
+            button18.Visible = false;
+
             MessageTransmission.SendMessage(Stream, "nobussy");
             panel8.Location = new Point(0,0);
             textBox13.Text = "";

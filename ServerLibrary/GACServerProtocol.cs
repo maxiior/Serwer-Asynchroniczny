@@ -226,36 +226,37 @@ namespace ServerLibrary
                             movements += s[i];
 
                         string statistics = "";
-                        statistics += "Login: " + u.Login + Environment.NewLine;
+                        statistics += "LOGIN: " + u.Login + Environment.NewLine;
                         statistics += "ELO: " + s[6] + Environment.NewLine;
-                        statistics += "*Statistics: " + Environment.NewLine;
+                        statistics += Environment.NewLine;
+                        statistics += "RESULTS" + Environment.NewLine;
 
                         if (matches == 0)
                         {
-                            statistics += "Wins: " + s[0] + " (0.0%)" + Environment.NewLine;
-                            statistics += "Loses: " + s[1] + " (0.0%)" + Environment.NewLine;
-                            statistics += "Draws: " + s[2] + " (0.0%)" + Environment.NewLine;
+                            statistics += "WINS: " + s[0] + " (0.0%)" + Environment.NewLine;
+                            statistics += "LOSES: " + s[1] + " (0.0%)" + Environment.NewLine;
+                            statistics += "DRAWS: " + s[2] + " (0.0%)" + Environment.NewLine;
                         }
                         else
                         {
-                            statistics += "Wins: " + s[0] + " (" + (float)s[0] / matches * 100 + "%)" + Environment.NewLine;
-                            statistics += "Loses: " + s[1] + " (" + (float)s[1] / matches * 100 + "%)" + Environment.NewLine;
-                            statistics += "Draws: " + s[2] + " (" + (float)s[2] / matches * 100 + "%)" + Environment.NewLine;
+                            statistics += "WINS: " + s[0] + " (" + (float)s[0] / matches * 100 + "%)" + Environment.NewLine;
+                            statistics += "LOSES: " + s[1] + " (" + (float)s[1] / matches * 100 + "%)" + Environment.NewLine;
+                            statistics += "DRAWS: " + s[2] + " (" + (float)s[2] / matches * 100 + "%)" + Environment.NewLine;
                         }
-
-                        statistics += "*The most common movements: " + Environment.NewLine;
+                        statistics += Environment.NewLine;
+                        statistics += "THE MOST COMMON MOVEMENTS" + Environment.NewLine;
 
                         if (matches == 0)
                         {
-                            statistics += "Rocks: " + s[3] + " (0.0%)" + Environment.NewLine;
-                            statistics += "Scissors: " + s[4] + " (0.0%)" + Environment.NewLine;
-                            statistics += "Papers: " + s[5] + " (0.0%)" + Environment.NewLine;
+                            statistics += "ROCKS: " + s[3] + " (0.0%)" + Environment.NewLine;
+                            statistics += "SCISSORS: " + s[4] + " (0.0%)" + Environment.NewLine;
+                            statistics += "PAPERS: " + s[5] + " (0.0%)" + Environment.NewLine;
                         }
                         else
                         {
-                            statistics += "Rocks: " + s[3] + " (" + (float)s[3] / movements * 100 + "%)" + Environment.NewLine;
-                            statistics += "Scissors: " + s[4] + " (" + (float)s[4] / movements * 100 + "%)" + Environment.NewLine;
-                            statistics += "Papers: " + s[5] + " (" + (float)s[5] / movements * 100 + "%)" + Environment.NewLine;
+                            statistics += "ROCKS: " + s[3] + " (" + (float)s[3] / movements * 100 + "%)" + Environment.NewLine;
+                            statistics += "SCISSORS: " + s[4] + " (" + (float)s[4] / movements * 100 + "%)" + Environment.NewLine;
+                            statistics += "PAPERS: " + s[5] + " (" + (float)s[5] / movements * 100 + "%)" + Environment.NewLine;
                         }
                         MessageTransmission.SendMessage(Stream, statistics);
                         break;
