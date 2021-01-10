@@ -12,3 +12,6 @@ namespace ServerAsyn
         }
     }
 }
+
+//show all players
+//refresh communicator list bug

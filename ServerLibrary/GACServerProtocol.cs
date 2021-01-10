@@ -17,6 +17,11 @@ namespace ServerLibrary
         private List<User> busyUsers = new List<User>();
         private List<User> loggedPlayers = new List<User>();
 
+        private List<User> inSolo = new List<User>();
+
+        private List<User> inDuo = new List<User>();
+        private List<DuoGame> activeDuoGames = new List<DuoGame>();
+
         public GACServerProtocol()
         {
             sql.ClearDbLoggedColumn();
@@ -57,7 +62,7 @@ namespace ServerLibrary
         /// <param name="Stream">Strumień użytkownika.</param>
         public override void Run(NetworkStream Stream, TcpClient client)
         {
-            Stream.ReadTimeout = 60000;
+            Stream.ReadTimeout = 600000;
             string option;
 
             while (true)
@@ -172,7 +177,7 @@ namespace ServerLibrary
                         break;
                     }
                 }
-                if (b == false && loggedPlayers[i].Login != player) users.Add(loggedPlayers[i]);
+                if (b == false && loggedPlayers[i].Login != player && inDuo.Contains(loggedPlayers[i]) == false && inSolo.Contains(loggedPlayers[i]) == false) users.Add(loggedPlayers[i]);
             }
 
             string logins = "";
@@ -210,7 +215,7 @@ namespace ServerLibrary
                         Communicator c = new Communicator();
                         activeConversation.Add(c);
                         busyUsers.Add(u);
-                        c.Run(sql, u.Login, clients, loggedPlayers, busyUsers);
+                        c.Run(sql, u.Login, clients, loggedPlayers, busyUsers, inDuo, inSolo);
                         busyUsers.Remove(u);
                         activeConversation.Remove(c);
                         break;
@@ -281,7 +286,7 @@ namespace ServerLibrary
                         Game g = new Game();
                         activeGames.Add(g);
                         busyUsers.Add(u);
-                        g.Run(sql, u.Login, clients, loggedPlayers, busyUsers);
+                        g.Run(sql, u.Login, clients, loggedPlayers, busyUsers, inDuo);
                         busyUsers.Remove(u);
                         activeGames.Remove(g);
                         break;
@@ -447,10 +452,22 @@ namespace ServerLibrary
                         for (int i = 0; i < activeConversation.Count; i++)
                             if (activeConversation[i].Interlocutor == u.Login) conversationIndex = i;
                         if (conversationIndex != -1) activeConversation[conversationIndex].interlocutorAnswere = "n";
+
+                        gameIndex = -1;
+                        for (int i = 0; i < activeDuoGames.Count; i++)
+                            if (activeDuoGames[i].Opponent1 == u.Login || activeDuoGames[i].Opponent2 == u.Login || activeDuoGames[i].Teammate == u.Login) gameIndex = i;
+                        if (gameIndex != -1)
+                        {
+                            if(activeDuoGames[gameIndex].Opponent1 == u.Login) activeDuoGames[gameIndex].opponent1Answere = "n";
+                            if(activeDuoGames[gameIndex].Opponent2 == u.Login) activeDuoGames[gameIndex].opponent2Answere = "n";
+                            if(activeDuoGames[gameIndex].Teammate == u.Login) activeDuoGames[gameIndex].Teammate = "n";
+                        }
                         break;
                     case "q":
                         MessageTransmission.SendMessage(Stream, "q");
                         busyUsers.Add(u);
+                        inDuo.Remove(u);
+                        inSolo.Remove(u);
                         break;
                     case "nobussy":
                         busyUsers.Remove(u);
@@ -460,6 +477,158 @@ namespace ServerLibrary
                         break;
                     case "ach":
                         sql.GetAchievements(Stream, u.Login);
+                        break;
+                    case "1d":
+                        DuoGame g2 = new DuoGame();
+                        activeDuoGames.Add(g2);
+                        busyUsers.Add(u);
+                        g2.Run(sql, u.Login, clients, loggedPlayers, busyUsers, inSolo);
+                        busyUsers.Remove(u);
+                        activeDuoGames.Remove(g2);
+                        break;
+                    case "induo":
+                        inDuo.Add(u);
+                        break;
+                    case "insolo":
+                        inSolo.Add(u);
+                        break;
+                    case "howmanyinfo":
+                        MessageTransmission.SendMessage(Stream, "hmi"+inDuo.Count.ToString());
+                        break;
+                    case "y1d":
+                        gameIndex = -1;
+                        try
+                        {
+                            for (int i = 0; i < activeDuoGames.Count; i++)
+                            {
+                                if (activeDuoGames[i].Opponent1 == u.Login || activeDuoGames[i].Opponent2 == u.Login || activeDuoGames[i].Teammate == u.Login)
+                                {
+                                    gameIndex = i;
+                                    break;
+                                }
+                                else gameIndex = -1;
+                            }
+                            if (gameIndex == -1) throw new Exception();
+
+                            if (gameIndex != -1)
+                            {
+                                if(activeDuoGames[gameIndex].Opponent1 == u.Login) activeDuoGames[gameIndex].opponent1Answere = "y";
+                                if(activeDuoGames[gameIndex].Opponent2 == u.Login) activeDuoGames[gameIndex].opponent2Answere = "y";
+                                if(activeDuoGames[gameIndex].Teammate == u.Login) activeDuoGames[gameIndex].TeammateAnswere = "y";
+                                busyUsers.Add(u);
+
+                            playagian:
+
+                                for (int j = 1; j <= 4; j++)
+                                {
+                                    MessageTransmission.SendMessage(Stream, "Choose rock, paper, scissors: " + Environment.NewLine);
+                                    string w = MessageTransmission.GetMessage(Stream);
+
+                                    for (int i = 0; i < activeDuoGames.Count; i++)
+                                    {
+                                        if (activeDuoGames[i].Opponent1 == u.Login || activeDuoGames[i].Opponent2 == u.Login || activeDuoGames[i].Teammate == u.Login)
+                                        {
+                                            gameIndex = i;
+                                            break;
+                                        }
+                                        else gameIndex = -1;
+                                    }
+                                    if (gameIndex == -1) throw new Exception();
+
+                                    if (activeDuoGames[gameIndex].Opponent1 == u.Login) activeDuoGames[gameIndex].Opponent1Choice.Add(w);
+                                    if (activeDuoGames[gameIndex].Opponent2 == u.Login) activeDuoGames[gameIndex].Opponent2Choice.Add(w);
+                                    if (activeDuoGames[gameIndex].Teammate == u.Login) activeDuoGames[gameIndex].TeammateChoice.Add(w);
+
+                                    if (activeDuoGames[gameIndex].connected == false)
+                                    {
+                                        MessageTransmission.SendMessage(Stream, "The opponents quit the game. Try to connect again." + Environment.NewLine);
+                                        busyUsers.Remove(u);
+                                        activeDuoGames.Remove(activeDuoGames[gameIndex]);
+                                        break;
+                                    }
+
+                                    if (activeDuoGames[gameIndex].Opponent1 == u.Login)
+                                    {
+                                        while (activeDuoGames[gameIndex].PlayerChoice.Count < j || activeDuoGames[gameIndex].Opponent2Choice.Count < j || activeDuoGames[gameIndex].TeammateChoice.Count < j)
+                                        {
+                                            for (int i = 0; i < activeDuoGames.Count; i++)
+                                                if (activeDuoGames[i].Opponent1 == u.Login) gameIndex = i;
+                                        }
+                                    }
+                                    else if (activeDuoGames[gameIndex].Opponent2 == u.Login)
+                                    {
+                                        while (activeDuoGames[gameIndex].PlayerChoice.Count < j || activeDuoGames[gameIndex].Opponent1Choice.Count < j || activeDuoGames[gameIndex].TeammateChoice.Count < j)
+                                        {
+                                            for (int i = 0; i < activeDuoGames.Count; i++)
+                                                if (activeDuoGames[i].Opponent2 == u.Login) gameIndex = i;
+                                        }
+                                    }
+                                    else if (activeDuoGames[gameIndex].Teammate == u.Login)
+                                    {
+                                        while (activeDuoGames[gameIndex].PlayerChoice.Count < j || activeDuoGames[gameIndex].Opponent2Choice.Count < j || activeDuoGames[gameIndex].Opponent1Choice.Count < j)
+                                        {
+                                            for (int i = 0; i < activeDuoGames.Count; i++)
+                                                if (activeDuoGames[i].Teammate == u.Login) gameIndex = i;
+                                        }
+                                    }
+
+                                    sql.AchievementUpdate(Stream, u.Login);
+                                    Thread.Sleep(50);
+                                }
+
+                                string a1 = MessageTransmission.GetMessage(Stream);
+                                if (a1 == "y")
+                                {
+                                    MessageTransmission.SendMessage(Stream, "Waiting for opponent and teammate..." + Environment.NewLine);
+
+                                    int se = 0;
+                                    if (activeDuoGames[gameIndex].Opponent1 == u.Login) activeDuoGames[gameIndex].opponent1Answere = "y";
+                                    if (activeDuoGames[gameIndex].Opponent2 == u.Login) activeDuoGames[gameIndex].opponent2Answere = "y";
+                                    if (activeDuoGames[gameIndex].Teammate == u.Login) activeDuoGames[gameIndex].TeammateAnswere = "y";
+
+                                    while (se < 100)
+                                    {
+                                        Thread.Sleep(100);
+                                        se++;
+                                        if (se == 100 || (activeDuoGames[gameIndex].hostAnswere != "" && activeDuoGames[gameIndex].opponent2Answere != "" &&
+                                            activeDuoGames[gameIndex].opponent1Answere != "" && activeDuoGames[gameIndex].TeammateAnswere != "")) break;
+                                    }
+
+                                    for (int i = 0; i < activeDuoGames.Count; i++)
+                                    {
+                                        if (activeDuoGames[i].Opponent1 == u.Login || activeDuoGames[i].Opponent2 == u.Login || activeDuoGames[i].Teammate == u.Login)
+                                        {
+                                            gameIndex = i;
+                                            break;
+                                        }
+                                        else gameIndex = -1;
+                                    }
+                                    if (gameIndex == -1) throw new Exception();
+
+                                    if ((activeDuoGames[gameIndex].hostAnswere == "y" && activeDuoGames[gameIndex].opponent2Answere == "y" &&
+                                            activeDuoGames[gameIndex].opponent1Answere == "y" && activeDuoGames[gameIndex].TeammateAnswere == "y") && se < 100)
+                                    {
+                                        MessageTransmission.SendMessage(Stream, "Opponent is ready to play." + Environment.NewLine);
+                                        goto playagian;
+                                    }
+                                    else MessageTransmission.SendMessage(Stream, "Opponent left the game." + Environment.NewLine);
+                                }
+                                else
+                                {
+                                    if (activeDuoGames[gameIndex].Opponent1 == u.Login) activeDuoGames[gameIndex].opponent1Answere = "n";
+                                    if (activeDuoGames[gameIndex].Opponent2 == u.Login) activeDuoGames[gameIndex].opponent2Answere = "n";
+                                    if (activeDuoGames[gameIndex].Teammate == u.Login) activeDuoGames[gameIndex].Teammate = "n";
+                                }
+
+                                busyUsers.Remove(u);
+                                Thread.Sleep(300);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            MessageTransmission.SendMessage(Stream, "Opponent left the game." + Environment.NewLine);
+                            busyUsers.Remove(u);
+                        }
                         break;
                 }
             }

@@ -16,10 +16,19 @@ namespace Client
         private string UserLogin;
         private bool connected = false;
         private bool send = false;
+        private bool WaitForPlayers = true;
+
+        private int ActiveDuoPlayers = 0;
 
         public Form1()
         {
             InitializeComponent();
+        }
+
+        ~Form1()
+        {
+            WaitForPlayers = false;
+            connected = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -266,17 +275,40 @@ namespace Client
         //Game
         private void button12_Click(object sender, EventArgs e)
         {
-            label20.Visible = false;
-            textBox9.Visible = false;
-            button18.Visible = false;
+            if(radioButton1.Checked == true)
+            {
+                label20.Visible = false;
+                textBox9.Visible = false;
+                button18.Visible = false;
 
-            MessageTransmission.SendMessage(Stream, "nobussy");
-            panel8.Location = new Point(0,0);
-            textBox13.Text = "";
-            textBox8.Visible = false;
-            panel8.Visible = true;
-            Thread tmp1 = new Thread(() => WaitForInviteGame());
-            tmp1.Start();
+                MessageTransmission.SendMessage(Stream, "nobussy");
+                MessageTransmission.SendMessage(Stream, "insolo");
+                panel8.Location = new Point(0, 0);
+                textBox13.Text = "";
+                textBox8.Visible = false;
+                panel8.Visible = true;
+                Thread tmp1 = new Thread(() => WaitForInviteGame());
+                tmp1.Start();
+            }
+            else if(radioButton2.Checked == true)
+            {
+                label33.Text = UserLogin;
+                label20.Visible = false;
+                textBox9.Visible = false;
+                button18.Visible = false;
+
+                MessageTransmission.SendMessage(Stream, "nobussy");
+                MessageTransmission.SendMessage(Stream, "induo");
+
+                panel10.Location = new Point(0, 0);
+                textBox12.Text = "";
+                textBox8.Visible = false;
+                panel10.Visible = true;
+                Thread tmp1 = new Thread(() => WaitForInviteDuoGame());
+                Thread tmp2 = new Thread(() => CheckHowManyPlayers());
+                tmp1.Start();
+                tmp2.Start();
+            }
         }
 
         private void WaitForInviteGame()
@@ -303,7 +335,7 @@ namespace Client
                 }
                 else if (m.StartsWith("There ") || m.StartsWith("The oppo") || m.StartsWith("Opponent left"))
                 {
-                    if(m.StartsWith("Opponent left") && connected) textBox13.Text += m;
+                    if (m.StartsWith("Opponent left") && connected) textBox13.Text += m;
                     else textBox13.Text += m;
                     button28.Visible = true;
                     button22.Visible = true;
@@ -341,6 +373,93 @@ namespace Client
                     return;
                 }
                 else textBox13.Text += m;
+            }
+        }
+
+        private void WaitForInviteDuoGame()
+        {
+            string m = "";
+            while (true)
+            {
+                m = "";
+                m = MessageTransmission.GetMessage(Stream);
+                if (m.StartsWith("PLAY:"))
+                {
+                    connected = true;
+                    textBox12.Text = "You have been invited to game. Do you want to PLAY? [YES/NO]" + Environment.NewLine;
+                }
+                else if (m.StartsWith("You "))
+                {
+                    textBox12.Text += m;
+                    button41.Visible = true;
+                    button35.Visible = true;
+                    button40.Visible = true;
+                    button39.Visible = true;
+                    WaitForPlayers = true;
+                    connected = false;
+                }
+                else if (m.StartsWith("There ") || m.StartsWith("The oppo") || m.StartsWith("Opponent left"))
+                {
+                    if (m.StartsWith("Opponent left") && connected) textBox12.Text += m;
+                    else textBox12.Text += m;
+                    button41.Visible = true;
+                    button35.Visible = true;
+                    button40.Visible = true;
+                    button39.Visible = true;
+                    WaitForPlayers = true;
+                    Thread tmp2 = new Thread(() => CheckHowManyPlayers());
+                    tmp2.Start();
+                    connected = false;
+                }
+                else if (m.StartsWith("STAT"))
+                {
+                    m = m.Replace("STAT", "");
+                    DialogResult dialogResult = MessageBox.Show(m, UserLogin, MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        MessageTransmission.SendMessage(Stream, "y");
+                        connected = true;
+                        button41.Visible = false;
+                        button35.Visible = false;
+                        button40.Visible = false;
+                        button39.Visible = false;
+                        textBox12.Text = "";
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        MessageTransmission.SendMessage(Stream, "n");
+                        button41.Visible = true;
+                        button35.Visible = true;
+                        button40.Visible = true;
+                        button39.Visible = true;
+                        label32.Visible = true;
+                        WaitForPlayers = true;
+                        Thread tmp2 = new Thread(() => CheckHowManyPlayers());
+                        tmp2.Start();
+                        connected = false;
+                    }
+                }
+                else if (m == "q")
+                {
+                    connected = false;
+                    return;
+                }
+                else if (m.StartsWith("hmi"))
+                {
+                    m = m.Replace("hmi", "");
+                    label32.Text = "ACTIVE PLAYERS: " + m;
+                    ActiveDuoPlayers = Convert.ToInt32(m);
+                }
+                else textBox12.Text += m;
+            }
+        }
+
+        private void CheckHowManyPlayers()
+        {
+            while (WaitForPlayers)
+            {
+                MessageTransmission.SendMessage(Stream, "howmanyinfo");
+                Thread.Sleep(1000);
             }
         }
 
@@ -562,6 +681,7 @@ namespace Client
 
         }
 
+        //PLAY SOLO
         private void button22_Click(object sender, EventArgs e)
         {
             connected = true;
@@ -811,6 +931,122 @@ namespace Client
         }
 
         private void label24_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel10_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void textBox12_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button35_Click(object sender, EventArgs e)
+        {
+            WaitForPlayers = false;
+            panel10.Visible = false;
+            MessageTransmission.SendMessage(Stream, "q");
+        }
+
+        private void button41_Click(object sender, EventArgs e)
+        {
+            textBox12.Text = "";
+            if (ActiveDuoPlayers >= 4)
+            {
+                label32.Visible = false;
+                WaitForPlayers = false;
+
+                connected = true;
+                button41.Visible = false;
+                button35.Visible = false;
+                button40.Visible = false;
+                button39.Visible = false;
+                MessageTransmission.SendMessage(Stream, "1d");
+            }
+            else textBox12.Text += "There must be at least 4 players!" + Environment.NewLine;
+        }
+
+        private void button40_Click(object sender, EventArgs e)
+        {
+            WaitForPlayers = false;
+            button41.Visible = false;
+            button35.Visible = false;
+            button40.Visible = false;
+            button39.Visible = false;
+            label32.Visible = false;
+            MessageTransmission.SendMessage(Stream, "y1d");
+        }
+
+        private void button39_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label32_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button38_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button37_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button36_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button38_Click_1(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button37_Click_1(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button36_Click_1(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button38_Click_2(object sender, EventArgs e)
+        {
+            MessageTransmission.SendMessage(Stream, "r");
+        }
+
+        private void button37_Click_2(object sender, EventArgs e)
+        {
+            MessageTransmission.SendMessage(Stream, "s");
+        }
+
+        private void button36_Click_2(object sender, EventArgs e)
+        {
+            MessageTransmission.SendMessage(Stream, "p");
+        }
+
+        private void label33_Click(object sender, EventArgs e)
         {
 
         }

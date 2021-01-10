@@ -187,7 +187,7 @@ namespace ServerLibrary
         /// </summary>
         /// <param name="player">Nazwa gracza.</param>
         /// <returns>Nazwa przeciwnika</returns>
-        public string SelectOpponent(string player, List<User> alreadyPlay)
+        public string SelectOpponent(string player, List<User> alreadyPlay, List<User> inDuo)
         {
             using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
             {
@@ -199,9 +199,67 @@ namespace ServerLibrary
                 List<string> p = new List<string>();
                 List<int> e = new List<int>();
 
+                bool check;
+
                 for (int i = 0; i < players.Count; i++)
                 {
-                    if (Convert.ToInt32(players[i].Logged) == 1 && players[i].Login != player && IfAlreadyPlay(players[i].Login, alreadyPlay, player) == false)
+                    check = false;
+
+                    for(int j=0; j<inDuo.Count; j++)
+                        if (inDuo[j].Login == players[i].Login) check = true;
+
+                    if (Convert.ToInt32(players[i].Logged) == 1 && players[i].Login != player && IfAlreadyPlay(players[i].Login, alreadyPlay, player) == false && check == false)
+                    {
+                        p.Add(players[i].Login);
+                        e.Add(Convert.ToInt32(players[i].Elo));
+                    }
+                }
+
+                if (e.Count() > 0)
+                {
+                    int min = Math.Abs(e[0] - actualA);
+                    int index = 0;
+
+                    for (int i = 1; i < e.Count(); i++)
+                    {
+                        if (Math.Abs(e[i] - actualA) < min)
+                        {
+                            min = e[i];
+                            index = i;
+                        }
+                    }
+                    return p[index];
+                }
+                else return null;
+            }
+        }
+        /// <summary>
+        /// Wyszukuje najlepiej dopasowanego przeciwnika wśród zalogowanych.
+        /// </summary>
+        /// <param name="player">Nazwa gracza.</param>
+        /// <returns>Nazwa przeciwnika</returns>
+        public string SelectOpponents(string player, List<User> alreadyPlay, List<string> alreadyAdded, List<User> inSolo)
+        {
+            using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
+            {
+                var PlayerELO = DbConn.QuerySingleOrDefault($"SELECT Elo FROM Users WHERE login='{player}';");
+                int actualA = Convert.ToInt32(PlayerELO.Elo);
+
+                var players = DbConn.Query("SELECT Login, Elo, Logged FROM Users;", new { ids = new[] { 1, 2, 3 } }).ToList(); ;
+
+                List<string> p = new List<string>();
+                List<int> e = new List<int>();
+
+                bool check;
+
+                for (int i = 0; i < players.Count; i++)
+                {
+                    check = false;
+
+                    for (int j = 0; j < inSolo.Count; j++)
+                        if (inSolo[j].Login == players[i].Login) check = true;
+
+                    if (Convert.ToInt32(players[i].Logged) == 1 && players[i].Login != player && IfAlreadyPlay(players[i].Login, alreadyPlay, player) == false && alreadyAdded.Contains(players[i].Login)==false && check == false)
                     {
                         p.Add(players[i].Login);
                         e.Add(Convert.ToInt32(players[i].Elo));

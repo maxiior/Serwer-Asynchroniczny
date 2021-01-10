@@ -51,11 +51,11 @@ namespace ServerLibrary
         /// <param name="rywal2"></param>
         /// <param name="Stream"></param>
         /// <returns></returns>
-        public void Run(Sqlite sql, string player, List<NetworkStream> clients, List<User> loggedPlayers, List<User> alreadyPlay)
+        public void Run(Sqlite sql, string player, List<NetworkStream> clients, List<User> loggedPlayers, List<User> alreadyPlay, List<User> inDuo)
         {
             Host = player;
             NetworkStream c1 = clients[GetClientIndex(player, loggedPlayers, clients)];
-            Opponent = sql.SelectOpponent(player, alreadyPlay);
+            Opponent = sql.SelectOpponent(player, alreadyPlay, inDuo);
 
             if(Opponent!=null)
             {
@@ -193,7 +193,7 @@ namespace ServerLibrary
                 else
                 {
                     this.Opponent = "";
-                    MessageTransmission.SendMessage(c1, "Opponent quits the game. Try to connect again." + Environment.NewLine);
+                    MessageTransmission.SendMessage(c1, "Opponent left the game. Try to connect again." + Environment.NewLine);
                 }
             }
             else MessageTransmission.SendMessage(c1, "There are no other players at the moment." + Environment.NewLine);

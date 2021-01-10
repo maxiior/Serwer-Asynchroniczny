@@ -33,7 +33,7 @@ namespace ServerLibrary
         /// <param name="s">Strumień użytkownika.</param>
         /// <param name="player">Nazwa użytkownika chcącego rozpocząć rozmowę.</param>
         /// <returns>Nazwa wybranego rozmówcy.</returns>
-        private string GetInterlocutor(List<User> loggedPlayers, List<User> busy, NetworkStream s, string player)
+        private string GetInterlocutor(List<User> loggedPlayers, List<User> busy, NetworkStream s, string player, List<User> inDuo, List<User> inSolo)
         {
             List<User> users = new List<User>();
             bool b;
@@ -49,7 +49,7 @@ namespace ServerLibrary
                         break;
                     }
                 }
-                if(b == false && loggedPlayers[i].Login != player) users.Add(loggedPlayers[i]);
+                if(b == false && loggedPlayers[i].Login != player && inDuo.Contains(loggedPlayers[i]) == false && inSolo.Contains(loggedPlayers[i]) == false) users.Add(loggedPlayers[i]);
             }
 
             if(users.Count == 0) return null;
@@ -92,11 +92,11 @@ namespace ServerLibrary
         /// <param name="rywal2"></param>
         /// <param name="Stream"></param>
         /// <returns></returns>
-        public void Run(Sqlite sql, string player, List<NetworkStream> clients, List<User> loggedPlayers, List<User> busy)
+        public void Run(Sqlite sql, string player, List<NetworkStream> clients, List<User> loggedPlayers, List<User> busy, List<User> inDuo, List<User> inSolo)
         {
             host = player;
             c1 = clients[GetClientIndex(player, loggedPlayers, clients)];
-            Interlocutor = GetInterlocutor(loggedPlayers, busy, c1, player);
+            Interlocutor = GetInterlocutor(loggedPlayers, busy, c1, player, inDuo, inSolo);
 
             if (Interlocutor != null && Interlocutor != "0")
             {
