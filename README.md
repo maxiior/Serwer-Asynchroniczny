@@ -6,7 +6,7 @@ W branchu main jest zawarta wersja konsolowa, a w brachu GUI wersja z interfejse
 maksim:maksim  
 maksim1:maxiior  
 kacper2:kbuczko  
-milosz3:milorl  
+milosz33:milorl  
 test22:test44  
 
 ### Instrukcja
