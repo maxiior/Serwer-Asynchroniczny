@@ -16,9 +16,7 @@ namespace ServerLibrary
         private List<Game> activeGames = new List<Game>();
         private List<User> busyUsers = new List<User>();
         private List<User> loggedPlayers = new List<User>();
-
         private List<User> inSolo = new List<User>();
-
         private List<User> inDuo = new List<User>();
         private List<DuoGame> activeDuoGames = new List<DuoGame>();
 
