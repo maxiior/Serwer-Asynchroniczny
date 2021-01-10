@@ -337,6 +337,7 @@ namespace ServerLibrary
                                         for (int i = 0; i < activeGames.Count; i++)
                                             if (activeGames[i].Opponent == u.Login) gameIndex = i;
                                     }
+                                    sql.AchievementUpdate(Stream, u.Login);
                                     Thread.Sleep(50);
                                 }
 
@@ -439,16 +440,12 @@ namespace ServerLibrary
                     case "n":
                         gameIndex = -1;
                         for (int i = 0; i < activeGames.Count; i++)
-                        {
                             if (activeGames[i].Opponent == u.Login) gameIndex = i;
-                        }
                         if (gameIndex != -1) activeGames[gameIndex].opponentAnswere = "n";
 
                         conversationIndex = -1;
                         for (int i = 0; i < activeConversation.Count; i++)
-                        {
                             if (activeConversation[i].Interlocutor == u.Login) conversationIndex = i;
-                        }
                         if (conversationIndex != -1) activeConversation[conversationIndex].interlocutorAnswere = "n";
                         break;
                     case "q":
@@ -460,6 +457,9 @@ namespace ServerLibrary
                         break;
                     case "freeusers":
                         GetInterlocutorList(Stream, u.Login);
+                        break;
+                    case "ach":
+                        sql.GetAchievements(Stream, u.Login);
                         break;
                 }
             }

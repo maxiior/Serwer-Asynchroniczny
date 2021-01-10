@@ -663,5 +663,156 @@ namespace Client
         {
 
         }
+
+        private void panel9_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button33_Click(object sender, EventArgs e)
+        {
+            panel9.Visible = true;
+            panel9.Location = new Point(0, 0);
+
+            MessageTransmission.SendMessage(Stream, "ach");
+            string ach = MessageTransmission.GetMessage(Stream);
+            int a = 0;
+
+            if(ach[0] == '1') pictureBox40.Visible = false;
+            if(ach[1] == '1') pictureBox39.Visible = false;
+            if(ach[2] == '1') pictureBox38.Visible = false;
+            if(ach[3] == '1') pictureBox37.Visible = false;
+            if(ach[4] == '1') pictureBox36.Visible = false;
+            if(ach[5] == '1') pictureBox35.Visible = false;
+            if(ach[6] == '1') pictureBox34.Visible = false;
+            if(ach[7] == '1') pictureBox25.Visible = false;
+            if(ach[8] == '1') pictureBox24.Visible = false;
+            if(ach[9] == '1') pictureBox23.Visible = false;
+            if(ach[10] == '1') pictureBox22.Visible = false;
+            if(ach[11] == '1') pictureBox33.Visible = false;
+            if(ach[12] == '1') pictureBox32.Visible = false;
+            if(ach[13] == '1') pictureBox31.Visible = false;
+            if(ach[14] == '1') pictureBox30.Visible = false;
+            if(ach[15] == '1') pictureBox29.Visible = false;
+            if(ach[16] == '1') pictureBox28.Visible = false;
+            if(ach[17] == '1') pictureBox27.Visible = false;
+            if(ach[18] == '1') pictureBox26.Visible = false;
+            if(ach[19] == '1') pictureBox21.Visible = false;
+
+            for (int i = 0; i < ach.Length; i++)
+                if (ach[i] == '1') a++;
+
+            label24.Text = "GET: " + a.ToString() + "/20";
+        }
+
+        private void button34_Click(object sender, EventArgs e)
+        {
+            panel9.Visible = false;
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox40_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox39_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox38_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox21_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox37_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox36_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox35_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox34_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox25_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox24_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox23_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox22_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox33_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox32_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox31_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox30_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox29_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label24_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

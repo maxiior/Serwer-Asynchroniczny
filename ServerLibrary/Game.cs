@@ -111,6 +111,8 @@ namespace ServerLibrary
                         sql.AddMove(player, PlayerChoice[i-1]);
                         sql.AddMove(Opponent, OpponentChoice[i-1]);
                         MessageTransmission.SendMessage(c1, Environment.NewLine);
+
+                        sql.AchievementUpdate(c1, player);
                     }
 
                     if (OpponentPoints > PlayerPoints)

@@ -113,6 +113,7 @@ namespace ServerLibrary
             {
                 DbConn.Execute($"INSERT INTO Users (login, password, elo, logged) VALUES ('{u.Login}', '{Encrypt(u.Password, u.Login)}', '{u.Elo}',0);");
             }
+            InsertAchievementsRow(u);
         }
         /// <summary>
         /// Usuwa użytkownika z bazy danych.
@@ -461,6 +462,195 @@ namespace ServerLibrary
                     return "";
                 }
             }
+        }
+        /// <summary>
+        /// Dodaje do tabeli z osiągnięciami wiersz przeznaczony dla danego użytkownika.
+        /// </summary>
+        /// <param name="u">Użytkownik.</param>
+        private void InsertAchievementsRow(User u)
+        {
+            using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
+            {
+                DbConn.Execute($"INSERT INTO Achievements (player) VALUES ('{u.Login}');");
+            }
+        }
+        /// <summary>
+        /// Sprawdza, czy użytkownik nie zdobył achievementa. Jeżeli tak, to wykonuje aktualizację tabeli Achievements.
+        /// </summary>
+        /// <param name="player">Użytkownik.</param>
+        public void AchievementUpdate(NetworkStream str, string player)
+        {
+            using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
+            {
+                var st = DbConn.Query($"SELECT Wins, Loses, Draws, Rocks, Scissors, Papers, Elo FROM Users WHERE login='{player}';", new { ids = new[] { 1, 2, 3, 4, 5, 6, 7 } }).ToList();
+                var ach = DbConn.Query($"SELECT wins30, wins50, wins100, rocks20, rocks100, rocks200, rocks1000, elo600, elo800, elo1000, elo1500," +
+                    $" scissors20, scissors100, scissors200, scissors1000, paper20, paper100, paper200, paper1000, ratio FROM Achievements WHERE player='{player}';", 
+                    new { ids = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 } }).ToList();
+                
+                List<int> s = new List<int>();
+                List<int> a = new List<int>();
+
+                s.Add(Convert.ToInt32(st[0].Wins));
+                s.Add(Convert.ToInt32(st[0].Loses));
+                s.Add(Convert.ToInt32(st[0].Draws));
+                s.Add(Convert.ToInt32(st[0].Rocks));
+                s.Add(Convert.ToInt32(st[0].Scissors));
+                s.Add(Convert.ToInt32(st[0].Papers));
+                s.Add(Convert.ToInt32(st[0].Elo));
+
+                a.Add(Convert.ToInt32(ach[0].wins30));
+                a.Add(Convert.ToInt32(ach[0].wins50));
+                a.Add(Convert.ToInt32(ach[0].wins100));
+                a.Add(Convert.ToInt32(ach[0].rocks20));
+                a.Add(Convert.ToInt32(ach[0].rocks100));
+                a.Add(Convert.ToInt32(ach[0].rocks200));
+                a.Add(Convert.ToInt32(ach[0].rocks1000));
+                a.Add(Convert.ToInt32(ach[0].elo600));
+                a.Add(Convert.ToInt32(ach[0].elo800));
+                a.Add(Convert.ToInt32(ach[0].elo1000));
+                a.Add(Convert.ToInt32(ach[0].elo1500));
+                a.Add(Convert.ToInt32(ach[0].scissors20));
+                a.Add(Convert.ToInt32(ach[0].scissors100));
+                a.Add(Convert.ToInt32(ach[0].scissors200));
+                a.Add(Convert.ToInt32(ach[0].scissors1000));
+                a.Add(Convert.ToInt32(ach[0].paper20));
+                a.Add(Convert.ToInt32(ach[0].paper100));
+                a.Add(Convert.ToInt32(ach[0].paper200));
+                a.Add(Convert.ToInt32(ach[0].paper1000));
+                a.Add(Convert.ToInt32(ach[0].ratio));
+
+                if (s[0] >= 30 && a[0] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET wins20=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : wins x30" + Environment.NewLine);
+                }
+                if (s[0] >= 50 && a[1] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET wins50=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : wins x50" + Environment.NewLine);
+                }
+                if (s[0] >= 100 && a[2] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET wins100=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : wins x100" + Environment.NewLine);
+                }
+
+                if (s[3] >= 20 && a[3] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET rocks20=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : rocks x20" + Environment.NewLine);
+                }
+                if (s[3] >= 100 && a[4] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET rocks100=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : rocks x100" + Environment.NewLine);
+                }
+                if (s[3] >= 200 && a[5] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET rocks200=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : rocks x200" + Environment.NewLine);
+                }
+                if (s[3] >= 1000 && a[6] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET rocks1000=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : rocks x1000" + Environment.NewLine);
+                }
+
+                if (s[4] >= 20 && a[11] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET scissors20=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : scissors x20" + Environment.NewLine);
+                }
+                if (s[4] >= 100 && a[12] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET scissors100=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : scissors x100" + Environment.NewLine);
+                }
+                if (s[4] >= 200 && a[13] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET scissors200=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : scissors x200" + Environment.NewLine);
+                }
+                if (s[4] >= 1000 && a[14] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET scissors1000=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : scissors x1000" + Environment.NewLine);
+                }
+
+                if (s[5] >= 20 && a[15] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET paper20=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : paper x20" + Environment.NewLine);
+                }
+                if (s[5] >= 100 && a[16] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET paper100=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : paper x100" + Environment.NewLine);
+                }
+                if (s[5] >= 200 && a[17] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET paper200=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : paper x200" + Environment.NewLine);
+                }
+                if (s[5] >= 1000 && a[18] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET paper1000=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : paper x1000" + Environment.NewLine);
+                }
+
+                if (s[6] >= 600 && a[7] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET elo600=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : ELO 600" + Environment.NewLine);
+                }
+                if (s[6] >= 800 && a[8] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET elo800=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : ELO 800" + Environment.NewLine);
+                }
+                if (s[6] >= 1000 && a[9] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET elo1000=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : ELO 1000" + Environment.NewLine);
+                }
+                if (s[6] >= 1500 && a[10] == 0)
+                {
+                    DbConn.Execute($"UPDATE Achievements SET elo1500=1 WHERE player='{player}';");
+                    MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : ELO 1500" + Environment.NewLine);
+                }
+
+                if ((s[0] + s[1] + s[2]) >= 20 && a[19] == 0)
+                    if (s[0] / (s[0] + s[1] + s[2]) >= 0.7)
+                    {
+                        DbConn.Execute($"UPDATE Achievements SET ratio=1 WHERE player='{player}';");
+                        MessageTransmission.SendMessage(str, "YOU GET A NEW ACHIEVEMENT! : W/L RATIO > 0.7" + Environment.NewLine);
+                    }
+            }
+        }
+        /// <summary>
+        /// Wysyła informacje o zdobytych achievementach do klienta.
+        /// </summary>
+        /// <param name="s">Strumień użytkownika.</param>
+        /// <param name="player">Nazwa użytkownika.</param>
+        public void GetAchievements(NetworkStream s, string player)
+        {
+            using (IDbConnection DbConn = new SQLiteConnection(ConnectionString()))
+            {
+                var ach = DbConn.Query($"SELECT wins30, wins50, wins100, rocks20, rocks100, rocks200, rocks1000, elo600, elo800, elo1000, elo1500," +
+                    $" scissors20, scissors100, scissors200, scissors1000, paper20, paper100, paper200, paper1000, ratio FROM Achievements WHERE player='{player}';",
+                    new { ids = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 } }).ToList();
+
+                string m = "";
+
+                m += Convert.ToString(ach[0].wins30) + Convert.ToString(ach[0].wins50) + Convert.ToString(ach[0].wins100) + Convert.ToString(ach[0].rocks20) +
+                    Convert.ToString(ach[0].rocks100) + Convert.ToString(ach[0].rocks200) + Convert.ToString(ach[0].rocks1000) +
+                    Convert.ToString(ach[0].elo600) + Convert.ToString(ach[0].elo800) + Convert.ToString(ach[0].elo1000) + Convert.ToString(ach[0].elo1500) +
+                    Convert.ToString(ach[0].scissors20) + Convert.ToString(ach[0].scissors100) + Convert.ToString(ach[0].scissors200) + Convert.ToString(ach[0].scissors1000) +
+                    Convert.ToString(ach[0].paper20) + Convert.ToString(ach[0].paper100) + Convert.ToString(ach[0].paper200) + Convert.ToString(ach[0].paper1000) +
+                    Convert.ToString(ach[0].ratio);
+
+                MessageTransmission.SendMessage(s, m);
+            }   
         }
 
         private static string ConnectionString()
